@@ -3,26 +3,53 @@
   <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta charset="utf-8">
-    <title>ようこそ、jigインターンへ！</title>
-    <style>
-      * {
-        box-sizing: border-box;
-        margin: 0;
-      }
-      html, body {
-        height: 100vh;
-        width: 100%;
-      }
-      body {
-        display: grid;
-        place-content: center;
-      }
-    </style>
-    <script type="module">
-      const message = await fetch("/welcome-message")
-      document.querySelector("body").innerHTML = `<h1>${await message.text()}</h1>`
-    </script>
+    <link rel="stylesheet" href="style.css">
+    <title>技術書どんぶらこ | ホーム</title>
   </head>
   <body>
+    <header></header>
+    <main>
+      <div class="container">
+        <div class="river">
+          <!-- Card 1 -->
+          <div class="card">
+            <div class="title-1"></div>
+            <div class="description-1"></div>
+          </div>
+          <!-- Card 1 End -->
+          <!-- Card 2 -->
+          <div class="card">
+            <div class="title-2"></div>
+            <div class="description-2"></div>
+          </div>
+          <!-- Card 2 End -->
+          <!-- Card 3 -->
+          <div class="card">
+            <div class="title-3"></div>
+            <div class="description-3"></div>
+          </div>
+          <!-- Card 3 End -->
+        </div>
+      </div>
+    </main>
+    <footer></footer>
+
+    <script type="module">
+      // ページが読み込まれたとき
+      globalThis.onload = async () => {
+        const response = await(await fetch("/article")).json();
+        const resObj = JSON.parse(response);
+
+        // titleのリスト
+        const titles = resObj.map(item => item.title);
+        // descriptionのリスト
+        const descriptions = resObj.map(item => item.description);
+
+        for (let i = 1; i < 4; i++) {
+          document.getElementById(`title-${i}`).innerText = titles[i];
+          document.getElementById(`description-${i}`).innerText = descriptions[i];
+        }
+      }
+    </script>
   </body>
 </html>
