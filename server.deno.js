@@ -16,7 +16,7 @@ Deno.serve(async (req) => {
   console.log(res_qiita);
 
   if (req.method === "GET" && pathname === "/article") {
-    const obj=[{
+    const obj = [{
       title: "title",
       updated_at: "2000-01-01T00:00:00+00:00",
       url: "https://qiita.com/Qiita/items/c686397e4a0f4f11683d",
@@ -38,9 +38,8 @@ Deno.serve(async (req) => {
       page_views_count: "page_views_count2",
       likes_count: "likes_count2",
     }];
-    return new Response(JSON.stringify(obj),
-    {
-      "Content-type": "application/json"
+    return new Response(JSON.stringify(obj), {
+      "Content-type": "application/json",
     });
   }
 
