@@ -26,12 +26,19 @@ Deno.serve(async (req) => {
   if (req.method === "GET" && pathname === "/article") {
     const obj = 
       resQiitaData.map(item =>{
-        return item.title;
+        return {
+          title:item.title,
+          updated_at: item.updated_at,
+          url: item.url,
+          descripition: item.rendered_body,
+          page_views_count: page_views_count,
+          likes_count: likes_count
+        }
       })
     
     return new Response(JSON.stringify(obj), {
       headers: {
-        "content-type": "text/html",
+        "content-type": "application/json",
       },
     });
   }
