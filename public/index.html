@@ -32,10 +32,11 @@
         
         resJson.forEach((article) => {
           const title = article.title;
-          const description = article.description;
+          const description = article.description; // 本文
+          const summary = (description.substring(0, 50)).replace(/\n/g, '');
 
           river.insertAdjacentHTML(
-            'beforeend', `<div class="card"><div class="title">${title}</div><div class="description">"${description}"</div></div>`
+            'beforeend', `<div class="card"><div class="title">${title}</div><div class="description">${summary}</div></div>`
           );
         });
       };
