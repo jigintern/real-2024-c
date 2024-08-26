@@ -13,13 +13,14 @@ Deno.serve(async (req) => {
   const site = "Zenn";
 
   if (req.method === "GET" && pathname === "/article") {
+    
+    page = 1 + (page % 100);
     //Qiitaから記事をとってくる
     if (site === "Qiita") {
       //Qiita APIからJSON形式で記事を取得
       console.log("Qiita API");
       const keyword = "Git";
 
-      page = 1 + (page % 100);
       //トークン情報をヘッダーに登録
       const reqQiita = new Request(
         // created:>=2022-12-01 created:<=2022-12-31で期間を特定
@@ -62,13 +63,13 @@ Deno.serve(async (req) => {
       }),
     );
 
-    const obj = resZennData.map((item)=>{
+    const obj = resZennData.articles.map((item) => {
       return {
         title: item.title,
         updated_at: item.body_updated_at,
-        url: `https://zenn.dev/${item.path}`,
-        likes_count:item.liked_count,
-      }
+        url: `https://zenn.dev/${item.path}&page=${page}`,
+        likes_count: item.liked_count,
+      };
     });
 
     return new Response(JSON.stringify(obj), {
