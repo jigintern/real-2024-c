@@ -13,10 +13,17 @@
       <div class="container">
         <div class="river">
           <!-- Example Card -->
-          <!-- <div class="card">
-            <div class="title">Title</div>
-            <div class="description">Description</div>
-          </div> -->
+          <div class="card">
+            <div class="top">
+              <div class="title">Title</div>
+              <div class="description">Description</div>
+            </div>
+            <div class="bottom">
+              <div class="likes"></div>
+              <div class="views"></div>
+              <div class="icon"><img src="./" alt="アイコン"></div>
+            </div>
+          </div>
           <!-- Example Card End -->
         </div>
       </div>
@@ -26,12 +33,15 @@
     <script type="module">
       // ページが読み込まれたとき
       globalThis.onload = async () => {
-        const response = await fetch("/article");
-        const resJson = await response.json();
         const river = document.querySelector(".river");
+        const response = await fetch("/article?qiita=true&zenn=true&github=true");
+        const resJson = await response.json();
+        const articles = [...resJson.Qiita, ...resJson.Zenn];
         
-        resJson.forEach((article) => {
+        articles.forEach((article) => {
           const title = article.title;
+
+          // zennはない
           const description = article.description; // 本文
           const summary = (description.substring(0, 50)).replace(/\n/g, '');
 
