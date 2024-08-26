@@ -7,16 +7,24 @@ Deno.serve(async (req) => {
   console.log(pathname);
 
   //クエリパラメータを取得
-  //const param= new URLSearchParams(window.location.search).get("type");
-  //console.log(url);
+  /*
+  const param= new URLSearchParams(window.location.search).get("type");
+  const qiita=param.get("qiita");
+  const zenn=param.get("zenn");
+  const github =param.get("github");
+  */
+  const qiita = 1;
+  const zenn = 1;
 
   const site = "Zenn";
-  let obj=[];
+  let obj = { "Qiita": [], "Zenn": [] };
+  let zennObj = [];
+  let qiitaObj = [];
 
   if (req.method === "GET" && pathname === "/article") {
     page = 1 + (page % 100);
     //Qiitaから記事をとってくる
-    if (site === "Qiita") {
+    if (qiita) {
       //Qiita APIからJSON形式で記事を取得
       console.log("Qiita API");
       const keyword = "Git";
@@ -39,7 +47,7 @@ Deno.serve(async (req) => {
           return `title: ${item.title}`;
         }),
       );
-      obj = resQiitaData.map((item) => {
+      qiitaObj.push(...resQiitaData.map((item) => {
         return {
           title: item.title,
           updated_at: item.updated_at,
@@ -48,11 +56,11 @@ Deno.serve(async (req) => {
           page_views_count: item.page_views_count,
           likes_count: item.likes_count,
         };
-      });
+      }));
     }
 
     //Zennから記事をとってくる
-    else if (site === "Zenn"){
+    if (zenn) {
       const resZenn = await fetch(
         `https://zenn.dev/api/articles?order=latest&page=${page}`,
       );
@@ -65,7 +73,7 @@ Deno.serve(async (req) => {
         }),
       );
 
-      obj = resZennData.articles.map((item) => {
+      zennObj.push(...resZennData.articles.map((item) => {
         return {
           title: item.title,
           updated_at: item.body_updated_at,
@@ -73,8 +81,11 @@ Deno.serve(async (req) => {
           likes_count: item.liked_count,
           username: item.user.username,
         };
-      });
+      }));
     }
+
+    obj.Qiita = qiitaObj;
+    obj.Zenn = zennObj;
 
     return new Response(JSON.stringify(obj), {
       headers: {
