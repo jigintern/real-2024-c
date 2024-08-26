@@ -1,10 +1,10 @@
 import { serveDir } from "https://deno.land/std@0.151.0/http/file_server.ts";
 
+let page = 0;
+
 Deno.serve(async (req) => {
   const pathname = new URL(req.url).pathname;
   console.log(pathname);
-
-  let page = 0;
 
 
   if (req.method === "GET" && pathname === "/article") {
