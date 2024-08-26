@@ -13,7 +13,6 @@ Deno.serve(async (req) => {
   const site = "Zenn";
 
   if (req.method === "GET" && pathname === "/article") {
-    
     page = 1 + (page % 100);
     //Qiitaから記事をとってくる
     if (site === "Qiita") {
@@ -52,26 +51,29 @@ Deno.serve(async (req) => {
     }
 
     //Zennから記事をとってくる
-    const resZenn = await fetch(`https://zenn.dev/api/articles?order=latest&page=${page}`);
-    //console.log(resZennDataOrigin);
-    const resZennData = await resZenn.json();
-    console.log(resZennData.articles);
+    if (site === "Zenn") {
+      const resZenn = await fetch(
+        `https://zenn.dev/api/articles?order=latest&page=${page}`,
+      );
+      const resZennData = await resZenn.json();
+      console.log(resZennData.articles);
 
-    console.log(
-      resZennData.articles.map((item) => {
-        return `title: ${item.title}`;
-      }),
-    );
+      console.log(
+        resZennData.articles.map((item) => {
+          return `title: ${item.title}`;
+        }),
+      );
 
-    const obj = resZennData.articles.map((item) => {
-      return {
-        title: item.title,
-        updated_at: item.body_updated_at,
-        url: `https://zenn.dev${item.path}`,
-        likes_count: item.liked_count,
-      };
-    });
-
+      const obj = resZennData.articles.map((item) => {
+        return {
+          title: item.title,
+          updated_at: item.body_updated_at,
+          url: `https://zenn.dev${item.path}`,
+          likes_count: item.liked_count,
+          username: item.username,
+        };
+      });
+    }
     return new Response(JSON.stringify(obj), {
       headers: {
         "content-type": "application/json",
