@@ -67,7 +67,7 @@ Deno.serve(async (req) => {
       return {
         title: item.title,
         updated_at: item.body_updated_at,
-        url: `https:/zenn.dev${item.path}`,
+        url: `https://zenn.dev${item.path}`,
         likes_count: item.liked_count,
       };
     });
