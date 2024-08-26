@@ -52,7 +52,7 @@ Deno.serve(async (req) => {
     }
 
     //Zennから記事をとってくる
-    const resZenn = await fetch("https://zenn.dev/api/articles?order=latest");
+    const resZenn = await fetch(`https://zenn.dev/api/articles?order=latest&page=${page}`);
     //console.log(resZennDataOrigin);
     const resZennData = await resZenn.json();
     console.log(resZennData.articles);
@@ -67,7 +67,7 @@ Deno.serve(async (req) => {
       return {
         title: item.title,
         updated_at: item.body_updated_at,
-        url: `https://zenn.dev/${item.path}&page=${page}`,
+        url: `https:/zenn.dev${item.path}`,
         likes_count: item.liked_count,
       };
     });
