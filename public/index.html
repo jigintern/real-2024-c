@@ -1,28 +1,44 @@
 <!DOCTYPE html>
 <html lang="ja">
   <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta charset="utf-8">
-    <title>ようこそ、jigインターンへ！</title>
-    <style>
-      * {
-        box-sizing: border-box;
-        margin: 0;
-      }
-      html, body {
-        height: 100vh;
-        width: 100%;
-      }
-      body {
-        display: grid;
-        place-content: center;
-      }
-    </style>
-    <script type="module">
-      const message = await fetch("/welcome-message")
-      document.querySelector("body").innerHTML = `<h1>${await message.text()}</h1>`
-    </script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="ホーム | 技術書どんぶらこ">
+    <title>技術書どんぶらこ | ホーム</title>
+    <link rel="stylesheet" href="style.css">
   </head>
   <body>
+    <header></header>
+    <main>
+      <div class="container">
+        <div class="river">
+          <!-- Example Card -->
+          <!-- <div class="card">
+            <div class="title">Title</div>
+            <div class="description">Description</div>
+          </div> -->
+          <!-- Example Card End -->
+        </div>
+      </div>
+    </main>
+    <footer></footer>
+
+    <script type="module">
+      // ページが読み込まれたとき
+      globalThis.onload = async () => {
+        const response = await fetch("/article");
+        const resJson = await response.json();
+        const river = document.querySelector(".river");
+        
+        resJson.forEach((article) => {
+          const title = article.title;
+          const description = article.description;
+
+          river.insertAdjacentHTML(
+            'beforeend', `<div class="card"><div class="title">${title}</div><div class="description">"${description}"</div></div>`
+          );
+        });
+      };
+    </script>
   </body>
 </html>
