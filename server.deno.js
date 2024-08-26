@@ -11,6 +11,7 @@ Deno.serve(async (req) => {
   //console.log(url);
 
   const site = "Zenn";
+  let obj=[];
 
   if (req.method === "GET" && pathname === "/article") {
     page = 1 + (page % 100);
@@ -38,7 +39,7 @@ Deno.serve(async (req) => {
           return `title: ${item.title}`;
         }),
       );
-      const obj = resQiitaData.map((item) => {
+      obj = resQiitaData.map((item) => {
         return {
           title: item.title,
           updated_at: item.updated_at,
@@ -51,12 +52,12 @@ Deno.serve(async (req) => {
     }
 
     //Zennから記事をとってくる
-    if (site === "Zenn") {
+    else if (site === "Zenn"){
       const resZenn = await fetch(
         `https://zenn.dev/api/articles?order=latest&page=${page}`,
       );
       const resZennData = await resZenn.json();
-      console.log(resZennData.articles);
+      //console.log(resZennData.articles);
 
       console.log(
         resZennData.articles.map((item) => {
@@ -64,7 +65,7 @@ Deno.serve(async (req) => {
         }),
       );
 
-      const obj = resZennData.articles.map((item) => {
+      obj = resZennData.articles.map((item) => {
         return {
           title: item.title,
           updated_at: item.body_updated_at,
@@ -74,6 +75,7 @@ Deno.serve(async (req) => {
         };
       });
     }
+
     return new Response(JSON.stringify(obj), {
       headers: {
         "content-type": "application/json",
