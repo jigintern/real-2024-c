@@ -9,7 +9,8 @@ Deno.serve(async (req) => {
     console.log("Qiita API");
     //トークン情報をヘッダーに登録
     const reqQiita = new Request(
-      "https://qiita.com/api/v2/items?query=sort=like",
+      // created:>=2022-12-01 created:<=2022-12-31で期間を特定
+      "https://qiita.com/api/v2/items?page=1&per_page=20&query=title:Git",
       {
         headers: {
           "Authorization": `Bearer ${(Deno.env.get("QIITA_API_TOKEN"))}`,
@@ -29,7 +30,7 @@ Deno.serve(async (req) => {
         title: item.title,
         updated_at: item.updated_at,
         url: item.url,
-        description: item.rendered_body,
+        description: item.body,
         page_views_count: item.page_views_count,
         likes_count: item.likes_count,
       };
