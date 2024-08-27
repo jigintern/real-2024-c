@@ -66,18 +66,21 @@
           const qiitaPtn = /qiita.com/;
           const zennPtn = /zenn.dev/;
 
+          let from = '';
+          let icon = '';
+
           if (qiitaPtn.test(url)) { 
             // Qiita
-            const from = 'Qiita';
-            const icon = './images/qiita.png';
+            from = 'Qiita';
+            icon = './images/qiita.png';
           } else if (zennPtn.test(url)) {
             // Zenn
-            const from = 'Zenn';
-            const icon = './images/zenn.png';
+            from = 'Zenn';
+            icon = './images/zenn.png';
           } else {
             // Issou
-            const from = 'Issou';
-            const icon = './images/fukuno-ichigojam-glass.jpg';
+            from = 'Issou';
+            icon = './images/fukuno-ichigojam-glass.jpg';
           }
 
           // riverクラスの子要素に順次追加されていく
