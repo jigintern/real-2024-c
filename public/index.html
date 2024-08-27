@@ -44,20 +44,20 @@
       globalThis.onload = async () => {
         const response = await fetch("/article?qiita=true&zenn=true&issou=true");
         const resJson = await response.json();
-        const articles = [...resJson.Qiita, ...resJson.Zenn, ...resJson.Issou];
+        const articles = [...resJson.Qiita, ...resJson.Zenn];
         const river = document.querySelector(".river");
         
         articles.forEach((article) => {
           const title = article.title;
-          const uploadAt = article.upload_at;
+          const updatedAt = article.updated_at;
           const url = article.item;
           const description = article.description;
           const likes = article.like_count;
           const comments = article.comments_count;
           const username = article.username;
 
-          // 返ってくる日付を変換
-          const date = uploadAt.substring(0,10).replace(/-/g, '/');
+          // 返ってくる日付を変換 2024-04-03 -> 2024/04/03
+          const date = updatedAt.substring(0,10).replace(/-/g, '/');
 
           // 説明文から \n を削除し、それを説明欄に記載
           const summary = (description.substring(0, 50)).replace(/\n/g, '');
@@ -80,6 +80,7 @@
             const icon = './images/fukuno-ichigojam-glass.jpg';
           }
 
+          // riverクラスの子要素に順次追加されていく
           river.insertAdjacentHTML(
             'beforeend', 
             `<div class="card">
