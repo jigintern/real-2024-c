@@ -6,6 +6,7 @@
     <meta name="description" content="ホーム | 技術書どんぶらこ">
     <title>技術書どんぶらこ | ホーム</title>
     <link rel="stylesheet" href="style.css">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
   </head>
   <body>
     <header></header>
@@ -14,8 +15,23 @@
         <div class="river">
           <!-- Example Card -->
           <!-- <div class="card">
-            <div class="title">Title</div>
-            <div class="description">Description</div>
+            <div class="top">
+              <div class="title">title</div>
+              <div class="description"><span id="upload-at">2024/01/01</span> - description&nbsp;...</div>
+            </div>
+            <div class="bottom">
+              <div class="info">
+                <div class="likes">
+                  <i class='bx bxs-heart'></i>
+                  <p>1000</p>
+                </div>
+                <div class="comments">
+                  <i class='bx bxs-conversation'></i>
+                  <p>1000</p>
+                </div>
+              </div>
+              <div class="icon"><img src="./images/.png" alt="のアイコン"></div>
+            </div>
           </div> -->
           <!-- Example Card End -->
         </div>
@@ -26,16 +42,65 @@
     <script type="module">
       // ページが読み込まれたとき
       globalThis.onload = async () => {
-        const response = await fetch("/article");
+        const response = await fetch("/article?qiita=true&zenn=true&issou=true");
         const resJson = await response.json();
+        const articles = [...resJson.Qiita, ...resJson.Zenn, ...resJson.Issou];
         const river = document.querySelector(".river");
         
-        resJson.forEach((article) => {
+        articles.forEach((article) => {
           const title = article.title;
+          const uploadAt = article.upload_at;
+          const url = article.item;
           const description = article.description;
+          const likes = article.like_count;
+          const comments = article.comments_count;
+          const username = article.username;
+
+          // 返ってくる日付を変換
+          const date = uploadAt.substring(0,10).replace(/-/g, '/');
+
+          // 説明文から \n を削除し、それを説明欄に記載
+          const summary = (description.substring(0, 50)).replace(/\n/g, '');
+
+          // 返ってきたurlのドメインからどのサイトかを判定
+          const qiitaPtn = /qiita.com/;
+          const zennPtn = /zenn.dev/;
+
+          if (qiitaPtn.test(url)) { 
+            // Qiita
+            const from = 'Qiita';
+            const icon = './images/qiita.png';
+          } else if (zennPtn.test(url)) {
+            // Zenn
+            const from = 'Zenn';
+            const icon = './images/zenn.png';
+          } else {
+            // Issou
+            const from = 'Issou';
+            const icon = './images/fukuno-ichigojam-glass.jpg';
+          }
 
           river.insertAdjacentHTML(
-            'beforeend', `<div class="card"><div class="title">${title}</div><div class="description">"${description}"</div></div>`
+            'beforeend', 
+            `<div class="card">
+              <div class="top">
+                <div class="title">${title}</div>
+                <div class="description"><span id="upload-at">${date}</span> - ${summary}&nbsp;...</div>
+              </div>
+              <div class="bottom">
+                <div class="info">
+                  <div class="likes">
+                    <i class='bx bxs-heart'></i>
+                    <p>${likes}</p>
+                  </div>
+                  <div class="comments">
+                    <i class='bx bxs-conversation'></i>
+                    <p>${comments}</p>
+                  </div>
+                </div>
+                <div class="icon"><img src="${icon}" alt="${from}のアイコン"></div>
+              </div>
+             </div>`
           );
         });
       };
