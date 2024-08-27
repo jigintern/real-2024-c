@@ -112,46 +112,46 @@ Deno.serve(async (req) => {
       }),
     );
     */
-    if (issou) {
-      console.log("issou");
-      fetch("https://fukuno.jig.jp/").then((resp) => resp.text()).then(
-        (source) => {
-          //HTMLソースを DOMオブジェクトに変換した物が入っている
-          const DOM = new DOMParser().parseFromString(source, "text/html");
-          const titleTarget = DOM.querySelectorAll("#chead > a > h2");
-          const urlTarget = DOM.querySelectorAll("#chead > a");
-          const dateTarget = DOM.querySelectorAll("#content > div.datetime");
-          const descriptionTarget = DOM.querySelectorAll("#cmain");
-          const Results = [];
+    // if (issou) {
+    //   console.log("issou");
+    //   fetch("https://fukuno.jig.jp/").then((resp) => resp.text()).then(
+    //     (source) => {
+    //       //HTMLソースを DOMオブジェクトに変換した物が入っている
+    //       const DOM = new DOMParser().parseFromString(source, "text/html");
+    //       const titleTarget = DOM.querySelectorAll("#chead > a > h2");
+    //       const urlTarget = DOM.querySelectorAll("#chead > a");
+    //       const dateTarget = DOM.querySelectorAll("#content > div.datetime");
+    //       const descriptionTarget = DOM.querySelectorAll("#cmain");
+    //       const Results = [];
 
-          for (let i = 0; i < titleTarget.length; i++) {
-            let title = titleTarget[i].innerText;
-            let updated_at = dateTarget[i].innerText;
-            let url = new URL(
-              urlTarget[i].getAttribute("href"),
-              "https://fukuno.jig.jp/",
-            ).href;
+    //       for (let i = 0; i < titleTarget.length; i++) {
+    //         let title = titleTarget[i].innerText;
+    //         let updated_at = dateTarget[i].innerText;
+    //         let url = new URL(
+    //           urlTarget[i].getAttribute("href"),
+    //           "https://fukuno.jig.jp/",
+    //         ).href;
 
-            //descriptionを取得
-            /*
-            let des_img=descriptionTarget[i].getElementsByTagName("img");
-            let des_p=descriptionTarget[i].getElementsByTagName("p");
-          console.log(descriptionTarget[i]);
-          let description=descriptionTarget[i].removeChild(des_img);
-          let likes_count;
-          let comments_count;
-          let username;
-          */
+    //         //descriptionを取得
+    //         /*
+    //         let des_img=descriptionTarget[i].getElementsByTagName("img");
+    //         let des_p=descriptionTarget[i].getElementsByTagName("p");
+    //       console.log(descriptionTarget[i]);
+    //       let description=descriptionTarget[i].removeChild(des_img);
+    //       let likes_count;
+    //       let comments_count;
+    //       let username;
+    //       */
 
-          Results.push({
-            title,updated_at,url,description,likes_count,comments_count,username
-          })
-          }
+    //       Results.push({
+    //         title,updated_at,url,description,likes_count,comments_count,username
+    //       })
+    //       }
 
-          console.log(Results);
-        },
-      );
-    }
+    //       console.log(Results);
+    //     },
+    //   );
+    // }
 
     obj.Qiita = qiitaObj;
     obj.Zenn = zennObj;
