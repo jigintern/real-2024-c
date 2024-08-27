@@ -42,9 +42,9 @@
     <script type="module">
       // ページが読み込まれたとき
       globalThis.onload = async () => {
-        const response = await fetch("/article?qiita=true&zenn=true");
+        const response = await fetch("/article?qiita=true&zenn=true&issou=true");
         const resJson = await response.json();
-        const articles = [...resJson.Qiita, ...resJson.Zenn];
+        const articles = [...resJson.Qiita, ...resJson.Zenn, ...resJson.Issou];
         const river = document.querySelector(".river");
         
         articles.forEach((article) => {
@@ -75,7 +75,9 @@
             const from = 'Zenn';
             const icon = './images/zenn.png';
           } else {
-            // 
+            // Issou
+            const from = 'Issou';
+            const icon = './images/fukuno-ichigojam-glass.jpg';
           }
 
           river.insertAdjacentHTML(
