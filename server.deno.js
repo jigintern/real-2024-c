@@ -125,27 +125,27 @@ Deno.serve(async (req) => {
           const Results = [];
 
           for (let i = 0; i < titleTarget.length; i++) {
-            var title = titleTarget[i].innerText;
-            var updated_at = dateTarget[i].innerText;
-            var url = new URL(
+            let title = titleTarget[i].innerText;
+            let updated_at = dateTarget[i].innerText;
+            let url = new URL(
               urlTarget[i].getAttribute("href"),
               "https://fukuno.jig.jp/",
             ).href;
 
             //descriptionを取得
             /*
-          var des_img=descriptionTarget[i].getElementsByTagName("img");
-          var des_p=descriptionTarget[i].getElementsByTagName("p");
-          console.log(des_img);
-          var description=descriptionTarget[i].removeChild(des_img);
-          var likes_count;
-          var comments_count;
-          var username;
+            let des_img=descriptionTarget[i].getElementsByTagName("img");
+            let des_p=descriptionTarget[i].getElementsByTagName("p");
+          console.log(descriptionTarget[i]);
+          let description=descriptionTarget[i].removeChild(des_img);
+          let likes_count;
+          let comments_count;
+          let username;
+          */
 
           Results.push({
             title,updated_at,url,description,likes_count,comments_count,username
           })
-          */
           }
 
           console.log(Results);
