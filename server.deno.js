@@ -1,5 +1,8 @@
 import { serveDir } from "https://deno.land/std@0.151.0/http/file_server.ts";
+//スクレイピング用のライブラリ
+import { DOMParser } from "https://deno.land/x/deno_dom/deno-dom-wasm.ts";
 
+//表示するページを変更するための変数
 let page = 0;
 
 Deno.serve(async (req) => {
@@ -15,8 +18,11 @@ Deno.serve(async (req) => {
   */
   const qiita = 1;
   const zenn = 1;
+  const issou = 1;
 
+  //どのサイトから記事を取ってくるか
   const site = "Zenn";
+  //レスポンス用のJSON変数
   let obj = { "Qiita": [], "Zenn": [] };
   let zennObj = [];
   let qiitaObj = [];
@@ -26,7 +32,7 @@ Deno.serve(async (req) => {
     //Qiitaから記事をとってくる
     if (qiita) {
       //Qiita APIからJSON形式で記事を取得
-      const keyWord="";
+      const keyWord = "";
       console.log("Qiita API");
       const keyword = "Git";
 
@@ -106,6 +112,46 @@ Deno.serve(async (req) => {
       }),
     );
     */
+    if (issou) {
+      console.log("issou");
+      fetch("https://fukuno.jig.jp/").then((resp) => resp.text()).then(
+        (source) => {
+          //HTMLソースを DOMオブジェクトに変換した物が入っている
+          const DOM = new DOMParser().parseFromString(source, "text/html");
+          const titleTarget = DOM.querySelectorAll("#chead > a > h2");
+          const urlTarget = DOM.querySelectorAll("#chead > a");
+          const dateTarget = DOM.querySelectorAll("#content > div.datetime");
+          const descriptionTarget = DOM.querySelectorAll("#cmain");
+          const Results = [];
+
+          for (let i = 0; i < titleTarget.length; i++) {
+            let title = titleTarget[i].innerText;
+            let updated_at = dateTarget[i].innerText;
+            let url = new URL(
+              urlTarget[i].getAttribute("href"),
+              "https://fukuno.jig.jp/",
+            ).href;
+
+            //descriptionを取得
+            /*
+            let des_img=descriptionTarget[i].getElementsByTagName("img");
+            let des_p=descriptionTarget[i].getElementsByTagName("p");
+          console.log(descriptionTarget[i]);
+          let description=descriptionTarget[i].removeChild(des_img);
+          let likes_count;
+          let comments_count;
+          let username;
+          */
+
+          Results.push({
+            title,updated_at,url,description,likes_count,comments_count,username
+          })
+          }
+
+          console.log(Results);
+        },
+      );
+    }
 
     obj.Qiita = qiitaObj;
     obj.Zenn = zennObj;
