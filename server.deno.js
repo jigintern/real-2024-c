@@ -10,22 +10,19 @@ Deno.serve(async (req) => {
   console.log(pathname);
 
   //クエリパラメータを取得
-  /*
-  const param= new URLSearchParams(window.location.search).get("type");
-  const qiita=param.get("qiita");
-  const zenn=param.get("zenn");
-  const github =param.get("github");
-  */
-  const qiita = 1;
-  const zenn = 1;
-  const issou = 1;
+  const param = new URL(req.url).searchParams;
+  const qiita = param.get("qiita") === "0" ? false : true;
+  const zenn = param.get("zenn") === "0" ? false : true;
+  const issou = param.get("issou") === "0" ? false : true;
+  //const github =param.get("github");
 
   //どのサイトから記事を取ってくるか
   const site = "Zenn";
   //レスポンス用のJSON変数
-  let obj = { "Qiita": [], "Zenn": [] };
+  let obj = { "Qiita": [], "Zenn": [] ,"Issou":[]};
   let zennObj = [];
   let qiitaObj = [];
+  let issouObj=[];
 
   if (req.method === "GET" && pathname === "/article") {
     page = 1 + (page % 100);
@@ -114,14 +111,18 @@ Deno.serve(async (req) => {
     */
     if (issou) {
       console.log("issou");
-      fetch("https://fukuno.jig.jp/").then((resp) => resp.text()).then(
+      await fetch("https://fukuno.jig.jp/").then((resp) => resp.text()).then(
         (source) => {
           //HTMLソースを DOMオブジェクトに変換した物が入っている
           const DOM = new DOMParser().parseFromString(source, "text/html");
           const titleTarget = DOM.querySelectorAll("#chead > a > h2");
           const urlTarget = DOM.querySelectorAll("#chead > a");
           const dateTarget = DOM.querySelectorAll("#content > div.datetime");
-          const descriptionTarget = DOM.querySelectorAll("#cmain");
+          const pre_descriptionTarget = DOM.querySelectorAll(".article");
+          let descriptionTarget=[];
+          for(let j=1;j<pre_descriptionTarget.length;j++){
+            descriptionTarget.push(pre_descriptionTarget[j]);
+          }
           const Results = [];
 
           for (let i = 0; i < titleTarget.length; i++) {
@@ -133,29 +134,49 @@ Deno.serve(async (req) => {
             ).href;
 
             //descriptionを取得
-            /*
-            let des_img=descriptionTarget[i].getElementsByTagName("img");
-            let des_p=descriptionTarget[i].getElementsByTagName("p");
-          console.log(descriptionTarget[i]);
-          let description=descriptionTarget[i].removeChild(des_img);
-          let likes_count;
-          let comments_count;
-          let username;
-          */
+            let description = descriptionTarget[i].innerText.trim().replace(/\s+/g, ' ').substring(0,60);
+            //"<h1><img hogegege>hoge</h1>".replace(/<("[^"]*"|'[^']*'|[^'">])*>/g,'')
+            //description.innerHTML.replace(/<("[^"]*"|'[^']*'|[^'">])*>/g, "");
+            console.log(description);
 
-          Results.push({
-            title,updated_at,url,description,likes_count,comments_count,username
-          })
+            let likes_count;
+            let comments_count;
+            let username;
+
+            Results.push({
+              title,
+              updated_at,
+              url,
+              description,
+              likes_count,
+              comments_count,
+              username,
+            });
           }
 
           console.log(Results);
+
+          issouObj.push(...Results.map((item) => {
+            return {
+              title: item.title,
+              updated_at: item.updated_at,
+              url: item.url,
+              description: item.body,
+              likes_count: item.likes_count,
+              comments_count: item.comments_count,
+              username: item.username,
+            };
+          }));
         },
       );
     }
 
     obj.Qiita = qiitaObj;
     obj.Zenn = zennObj;
+    obj.Issou=issouObj;
 
+    console.log("show obj");
+    //console.log(obj);
     return new Response(JSON.stringify(obj), {
       headers: {
         "content-type": "application/json",
