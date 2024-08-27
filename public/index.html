@@ -42,9 +42,9 @@
     <script type="module">
       // ページが読み込まれたとき
       globalThis.onload = async () => {
-        const response = await fetch("/article");
+        const response = await fetch("/article?qiita=true&zenn=true&issou=true");
         const resJson = await response.json();
-        const articles = [...resJson.Qiita, ...resJson.Zenn, ...resJson.Issou];
+        const articles = [...resJson.Qiita, ...resJson.Zenn];
         const river = document.querySelector(".river");
         
         articles.forEach((article) => {
