@@ -109,7 +109,7 @@ Deno.serve(async (req) => {
       }),
     );
     */
-    if (1) {
+    if (issou) {
       console.log("issou");
       await fetch("https://fukuno.jig.jp/").then((resp) => resp.text()).then(
         (source) => {
