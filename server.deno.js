@@ -11,9 +11,9 @@ Deno.serve(async (req) => {
 
   //クエリパラメータを取得
   const param = new URL(req.url).searchParams;
-  const qiita = param.get("qiita") === "1" ? true : false;
-  const zenn = param.get("zenn") === "1" ? true : false;
-  const issou = param.get("issou") === "1" ? true : false;
+  const qiita = param.get("qiita") === "0" ? false : true;
+  const zenn = param.get("zenn") === "0" ? false : true;
+  const issou = param.get("issou") === "0" ? false : true;
   //const github =param.get("github");
 
   //どのサイトから記事を取ってくるか
