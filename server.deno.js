@@ -5,8 +5,6 @@ import { DOMParser } from "https://deno.land/x/deno_dom/deno-dom-wasm.ts";
 //表示するページを変更するための変数
 let page = 0;
 //let keyWord="3D";
-let qiitaPage=0;
-let issouPage=0;
 const issouPageCount=20;
 
 Deno.serve(async (req) => {
@@ -18,7 +16,7 @@ Deno.serve(async (req) => {
   const qiita = param.get("qiita") === "0" ? false : true;
   const zenn = param.get("zenn") === "0" ? false : true;
   const issou = param.get("issou") === "0" ? false : true;
-  const keyWord = param.get("q");
+  const keyWord = param.get("q") ||"";
 
   //レスポンス用のJSON変数
   let obj = { "Qiita": [], "Zenn": [], "Issou": [] };
