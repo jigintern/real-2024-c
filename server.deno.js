@@ -4,8 +4,8 @@ import { DOMParser } from "https://deno.land/x/deno_dom/deno-dom-wasm.ts";
 
 //表示するページを変更するための変数
 let page = 0;
-let issouPage=0;
-const issouPageCount=20;
+let issouPage = 0;
+const issouPageCount = 20;
 
 Deno.serve(async (req) => {
   const pathname = new URL(req.url).pathname;
@@ -114,7 +114,6 @@ Deno.serve(async (req) => {
     if (issou) {
       console.log("issou");
 
-
       //結果を格納する配列
       const Results = [];
       //一日一創から情報を取得
@@ -130,12 +129,16 @@ Deno.serve(async (req) => {
             const urlsAll = domAll.querySelectorAll("#cmain > div > a");
             //ページを指定
             //const urlsSliced=urlsAll.slice((issouPage++)*issouPageCount,issouPage*issouPageCount);
-            const urlsSliced=[];
-            for(let i=issouPage++*issouPageCount;i<issouPage*issouPageCount;i++){
+            const urlsSliced = [];
+            for (
+              let i = issouPage++ * issouPageCount;
+              i < issouPage * issouPageCount;
+              i++
+            ) {
               urlsSliced.push(urlsAll[i]);
             }
-            
-            for(const item of urlsSliced ){
+
+            for (const item of urlsSliced) {
               const resp = await fetch(item.getAttribute("href"));
               const source = await resp.text();
 
@@ -186,79 +189,23 @@ Deno.serve(async (req) => {
                   username,
                 });
               }
-
-      await fetch("https://fukuno.jig.jp/").then((resp) => resp.text()).then(
-        (source) => {
-          //HTMLソースを DOMオブジェクトに変換した物が入っている
-          const DOM = new DOMParser().parseFromString(source, "text/html");
-          const titleTarget = DOM.querySelectorAll("#chead > a > h2");
-          const urlTarget = DOM.querySelectorAll("#chead > a");
-          const dateTarget = DOM.querySelectorAll("#content > div.datetime");
-          const pre_descriptionTarget = DOM.querySelectorAll(".article");
-          let descriptionTarget=[];
-          for(let j=1;j<pre_descriptionTarget.length;j++){
-            descriptionTarget.push(pre_descriptionTarget[j]);
-          }
-          const Results = [];
-
-          for (let i = 0; i < titleTarget.length; i++) {
-            let title = titleTarget[i].innerText;
-            let updated_at = dateTarget[i].innerText;
-            let url = new URL(
-              urlTarget[i].getAttribute("href"),
-              "https://fukuno.jig.jp/",
-            ).href;
-
-            //descriptionを取得
-            let description = descriptionTarget[i].innerText.trim().replace(/\s+/g, ' ').substring(0,60);
-            //"<h1><img hogegege>hoge</h1>".replace(/<("[^"]*"|'[^']*'|[^'">])*>/g,'')
-            //description.innerHTML.replace(/<("[^"]*"|'[^']*'|[^'">])*>/g, "");
-            console.log(description);
-
-            let likes_count;
-            let comments_count;
-            let username;
-
-            Results.push({
-              title,
-              updated_at,
-              url,
-              description,
-              likes_count,
-              comments_count,
-              username,
-            });
-          }
-
-          console.log(Results);
-
-          issouObj.push(...Results.map((item) => {
-            return {
-              title: item.title,
-              updated_at: item.updated_at,
-              url: item.url,
-              description: item.description,
-              likes_count: item.likes_count,
-              comments_count: item.comments_count,
-              username: item.username,
-
-            };
-
-            console.log(Results);
-
-            issouObj.push(...Results.map((item) => {
-              return {
-                title: item.title,
-                updated_at: item.updated_at,
-                url: item.url,
-                description: item.body,
-                likes_count: item.likes_count,
-                comments_count: item.comments_count,
-                username: item.username,
-              };
-            }));
+            }
           },
         );
+
+      console.log(Results);
+
+      issouObj.push(...Results.map((item) => {
+        return {
+          title: item.title,
+          updated_at: item.updated_at,
+          url: item.url,
+          description: item.description,
+          likes_count: item.likes_count,
+          comments_count: item.comments_count,
+          username: item.username,
+        };
+      }));
     }
 
     obj.Qiita = qiitaObj;
