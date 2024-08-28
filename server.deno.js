@@ -161,7 +161,7 @@ Deno.serve(async (req) => {
               title: item.title,
               updated_at: item.updated_at,
               url: item.url,
-              description: item.body,
+              description: item.description,
               likes_count: item.likes_count,
               comments_count: item.comments_count,
               username: item.username,
