@@ -137,12 +137,16 @@ Deno.serve(async (req) => {
             const urlsAll = domAll.querySelectorAll("#cmain > div > a");
             //ページを指定
             //const urlsSliced=urlsAll.slice((issouPage++)*issouPageCount,issouPage*issouPageCount);
-            const urlsSliced=[];
-            for(let i=issouPage++*issouPageCount;i<issouPage*issouPageCount;i++){
+            const urlsSliced = [];
+            for (
+              let i = issouPage++ * issouPageCount;
+              i < issouPage * issouPageCount;
+              i++
+            ) {
               urlsSliced.push(urlsAll[i]);
             }
-            
-            for(const item of urlsSliced ){
+
+            for (const item of urlsSliced) {
               const resp = await fetch(item.getAttribute("href"));
               const source = await resp.text();
 
@@ -193,23 +197,23 @@ Deno.serve(async (req) => {
                   username,
                 });
               }
-            };
-
-            console.log(Results);
-
-            issouObj.push(...Results.map((item) => {
-              return {
-                title: item.title,
-                updated_at: item.updated_at,
-                url: item.url,
-                description: item.body,
-                likes_count: item.likes_count,
-                comments_count: item.comments_count,
-                username: item.username,
-              };
-            }));
+            }
           },
         );
+
+      console.log(Results);
+
+      issouObj.push(...Results.map((item) => {
+        return {
+          title: item.title,
+          updated_at: item.updated_at,
+          url: item.url,
+          description: item.description,
+          likes_count: item.likes_count,
+          comments_count: item.comments_count,
+          username: item.username,
+        };
+      }));
     }
 
     obj.Qiita = qiitaObj;
