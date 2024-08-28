@@ -32,18 +32,26 @@ p {
   min-height: 100vh;
 }
 
-.river {
-  max-width: 85%;
-  display: flex;
-  justify-content: center;
-  flex-direction: column;
-  margin: 0 auto;
+#river {
+  width: 100vw;
+  height: 100vh;
+  position: relative;
+  overflow: hidden;
+}
+
+.feed-item {
+  position: absolute;
+  overflow: hidden;
+  transform-origin: center;
+  width: 45%;
+  height: 30%;
 }
 
 .card {
   background: #fff;
   border-radius: 15px;
   margin-top: 20px;
+  height: 1000px;
 }
 .card .top {
   margin: 20px 20px 0 20px;

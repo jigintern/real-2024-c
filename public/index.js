@@ -66,64 +66,73 @@ const genArticle = () => {
     return card;
 };
 
-function addContent(content, zIndex) {
+async function addContent(content, zIndex) {
     const river = document.querySelector('.river');
-
     // contentの内容をhtmlに挿入した後、.cardから取得
-    river.insertAdjacentHTML('beforeend', content);
-    const card = document.querySelector('.card');
+    await river.insertAdjacentHTML('beforeend', content);
+    const card = document.querySelectorAll('.river .card:last-child')[0];
 
-    card.innerHTML = content;
-    card.computedStyleMap.zIndex = zIndex;
+    card.style.zIndex = zIndex;  
+    card.style.position = 'fixed';
+    card.style.top = '-20%';
+    card.style.left = '50%';
+    card.style.transform = 'translate(-50%, 0)';
     river.appendChild(card);
 
+    const baseWidth = window.innerWidth * .8;
+    const aspect = 16 /9;
+
     gsap.set(card, {
-        top: '5%', scale: 0.3, width: '30%', left: '35%'
+        width: baseWidth,
+        height: baseWidth / aspect,
+        scale: 0.3,
+        y: 0,
     });
 
     gsap.to(card, {
-        duration: 10,
-        top: '105%',
-        scale: 1.5,
-        width: '100%',
-        left: '0%',
-        ease: 'power2.in',
-        x: "random(200, -200, 50)",
-        yoyo: true,
+        duration: 8,
+        scale: 1,
+        y: window.innerHeight * .8,
+        ease: 'power2.out',
         onUpdate: () => {
-            const aspect = 16 /9;
+            // カード内の要素をどのように変化させるか
             const currentWidth = card.offsetWidth;
-            card.computedStyleMap.height = `${currentWidth / aspect}px`;
 
             const title = card.querySelector('.title');
             const description = card.querySelector('.description');
-            const status = card.querySelector('.bottom');
+            const info = card.querySelector('.bottom');
 
-            title.computedStyleMap.fontSize = `${currentWidth * .1}px`;
-            description.computedStyleMap.fontSize = `${currentWidth * .05}px`;
-            status.computedStyleMap.fontSize = `${currentWidth * .05}px`;
+            title.style.fontSize = `${currentWidth * .05}px`;
+            description.style.fontSize = `${currentWidth * .035}px`;
+            info.style.fontSize = `${currentWidth * .035}px`;
 
-            const mergin = currentWidth * .02;
-            title.style.merginBottom = `${margin}px`;
-            description.style.mergin = `${margin}px 0`;
-            status.style.merginTop = `${margin * 2}px`;
+            const margin = currentWidth * .02;
+            title.style.marginBottom = `${margin}px`;
+            description.style.margin = `${margin}px 0`;
+            info.style.marginBottom = `${margin * 2}px`;
         },
         onComplete: () => {
-            river.removeChild(card);
+            // gsap.to(card, {
+            //     duration: 3,
+            //     y: window.innerHeight * 1.25,
+            //     ease: 'power1.in',
+            //     onComplete: () => {
+            //         // river.removeChild(card);
+            //     }
+            // })
         }
     })
-    
-}
+};
 
 globalThis.onload = async () => {
     const response = await fetch("/article?qiita=true&zenn=true&issou=true");
     const resJson = await response.json();
     articles = [...resJson.Qiita, ...resJson.Zenn, ...resJson.Issou];
-    addContent(genArticle(), 1000);
+    addContent(genArticle(), 0);
 };
 
-let zIndex = 999;
-setInterval(() => {
-    addContent(genArticle(), zIndex);
-    zIndex -= 1;
-}, 5000);
+// let zIndex = 1;
+// setInterval(() => {
+//     addContent(genArticle(), zIndex);
+//     zIndex += 1;
+// }, 5000);
