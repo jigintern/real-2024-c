@@ -5,6 +5,7 @@ import { DOMParser } from "https://deno.land/x/deno_dom/deno-dom-wasm.ts";
 //表示するページを変更するための変数
 let page = 0;
 //let keyWord="3D";
+const zennPageCount=20;
 const issouPageCount=20;
 
 Deno.serve(async (req) => {
@@ -65,11 +66,23 @@ Deno.serve(async (req) => {
     //Zennから記事をとってくる
     if (zenn) {
       console.log("ZennAPI");
+      keyWord.replace(/\s+/g,"");
+      let zennUrl
+      if(keyWord!=="") zennUrl=`https://zenn.dev/api/search?q=${keyWord}&order=alltime&source=articles&page=${page}`;
+      else zennUrl=`https://zenn.dev/api/articles?order=latest`
+      console.log(zennUrl);
       const resZenn = await fetch(
-        `https://zenn.dev/api/search?q=${keyWord}&order=alltime&source=articles&page=${page}`,
+        zennUrl,
       );
       const resZennData = await resZenn.json();
-      //console.log(resZennData.articles);
+      const zennDataSliced = [];
+            for (
+              let i = (page-1) * zennPageCount;
+              i < page * zennPageCount;
+              i++
+            ) {
+              zennDataSliced.push(resZennData.articles[i]);
+            }
 
       console.log(
         resZennData.articles.map((item) => {
@@ -77,7 +90,7 @@ Deno.serve(async (req) => {
         }),
       );
 
-      zennObj.push(...resZennData.articles.map((item) => {
+      zennObj.push(...zennDataSliced.map((item) => {
         return {
           title: item.title,
           updated_at: item.body_updated_at,
