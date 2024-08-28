@@ -4,8 +4,8 @@ import { DOMParser } from "https://deno.land/x/deno_dom/deno-dom-wasm.ts";
 
 //表示するページを変更するための変数
 let page = 0;
-let githubPage=0;
-let keyWord="Git";
+//let keyWord="3D";
+let qiitaPage=0;
 let issouPage=0;
 const issouPageCount=20;
 
@@ -18,6 +18,7 @@ Deno.serve(async (req) => {
   const qiita = param.get("qiita") === "0" ? false : true;
   const zenn = param.get("zenn") === "0" ? false : true;
   const issou = param.get("issou") === "0" ? false : true;
+  const keyWord = param.get("q");
 
   //レスポンス用のJSON変数
   let obj = { "Qiita": [], "Zenn": [], "Issou": [] };
@@ -30,12 +31,11 @@ Deno.serve(async (req) => {
     //Qiitaから記事をとってくる
     if (qiita) {
       //Qiita APIからJSON形式で記事を取得
-      const keyWord = "";
       console.log("Qiita API");
 
       //トークン情報をヘッダーに登録
       const reqQiita = new Request(
-        // created:>=2022-12-01 created:<=2022-12-31で期間を特定
+        // 
         `https://qiita.com/api/v2/items?page=${page}&per_page=20&sort=stock&query=title:${keyWord}`,
         {
           headers: {
@@ -68,7 +68,7 @@ Deno.serve(async (req) => {
     if (zenn) {
       console.log("ZennAPI");
       const resZenn = await fetch(
-        `https://zenn.dev/api/articles?order=latest&page=${page}`,
+        `https://zenn.dev/api/search?q=${keyWord}&order=alltime&source=articles&page=${page}`,
       );
       const resZennData = await resZenn.json();
       //console.log(resZennData.articles);
@@ -126,7 +126,7 @@ Deno.serve(async (req) => {
       const Results = [];
       //一日一創から情報を取得
       //ブログ一覧からスクレイピング
-      await fetch("https://fukuno.jig.jp/?q=%2B").then((resp) => resp.text())
+      await fetch(`https://fukuno.jig.jp/?q=${keyWord}`).then((resp) => resp.text())
         .then(
           async (source_all) => {
             const domAll = new DOMParser().parseFromString(
@@ -139,8 +139,8 @@ Deno.serve(async (req) => {
             //const urlsSliced=urlsAll.slice((issouPage++)*issouPageCount,issouPage*issouPageCount);
             const urlsSliced = [];
             for (
-              let i = issouPage++ * issouPageCount;
-              i < issouPage * issouPageCount;
+              let i = (page-1) * issouPageCount;
+              i < page * issouPageCount;
               i++
             ) {
               urlsSliced.push(urlsAll[i]);
