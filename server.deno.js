@@ -69,7 +69,7 @@ Deno.serve(async (req) => {
     });
   }
   if (req.method === "GET" && pathname === "/article") {
-    page = 1 + (page % 100);
+    page = 1 + (page % 8);
 
     //Qiitaから記事をとってくる
     if (qiita) {
@@ -183,8 +183,8 @@ Deno.serve(async (req) => {
         "rss > channel > item > description",
       );
       for (
-        let i = issouPageCount * (page - 1);
-        i < issouPageCount * page;
+        let i = (issouPageCount * (page - 1)) % titleTarget / length;
+        i < (issouPageCount * page) % titleTarget / length;
         i++
       ) {
         const title = titleTarget[i].innerText;
