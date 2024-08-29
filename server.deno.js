@@ -1,6 +1,10 @@
 import { serveDir } from "https://deno.land/std@0.151.0/http/file_server.ts";
 //スクレイピング用のライブラリ
 import { DOMParser } from "https://deno.land/x/deno_dom/deno-dom-wasm.ts";
+//ハッシュ値生成用ライブラリ
+import { generate } from "https://deno.land/std@0.224.0/uuid/v5.ts";
+
+const NAMESPACE_URL = "6ba7b811-9dad-11d1-80b4-00c04fd430c8";
 
 //表示するページを変更するための変数
 let page = 0;
@@ -12,6 +16,9 @@ let flag=true
 Deno.serve(async (req) => {
   const pathname = new URL(req.url).pathname;
   console.log(pathname);
+
+  //データベースにアクセス
+  const kv = await Deno.openKv(Deno.env.get("DENO_KV_URL"));
 
   //クエリパラメータを取得
   const param = new URL(req.url).searchParams;
@@ -25,6 +32,32 @@ Deno.serve(async (req) => {
   let zennObj = [];
   let qiitaObj = [];
   let issouObj = [];
+
+  if (req.method === "POST" && pathname === "/river"){
+    console.log("POST");
+    // リクエストのペイロードを取得
+    const requestJson = await req.json();
+
+    const river_name=requestJson.river_name;
+    const articles=requestJson.articles;
+
+    //ハッシュ値生成
+    const uuid = await generate(NAMESPACE_URL, new TextEncoder().encode(river_name));
+    const key=["river",uuid];
+    const value={
+      "river_name":river_name,
+      "articles": articles,
+    }
+
+    const result = await kv.set(key, value);
+    console.log(result);
+
+    return Response.json({ 
+      status:200,  
+      river_id: uuid,
+    });
+  }
+  
 
   if (req.method === "GET" && pathname === "/article") {
     page = 1 + (page % 100);
@@ -101,8 +134,6 @@ Deno.serve(async (req) => {
         }),
       );
       */
-      console.log(zennDataSliced);
-      console.log(zennPage);
       zennObj.push(...zennDataSliced.map((item) => {
         return {
           title: item.title,
