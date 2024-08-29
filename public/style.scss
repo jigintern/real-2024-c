@@ -124,8 +124,8 @@ main {
 }
 
 #popup-wrapper {
-width: 100vw; /*画面に大きさを合わせる*/
-height: 100vh;
+width: 100%; /*画面に大きさを合わせる*/
+height: 100%;
 position: fixed; /*ラッパーの左上隅を画面左上に固定*/
 top: 0px;
 left: 0px;
