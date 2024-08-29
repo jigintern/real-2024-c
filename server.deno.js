@@ -6,7 +6,7 @@ import { DOMParser } from "https://deno.land/x/deno_dom/deno-dom-wasm.ts";
 let page = 0;
 //let keyWord="3D";
 const zennPageCount=20;
-const issouPageCount=20;
+const issouPageCount=5;
 let flag=true
 
 Deno.serve(async (req) => {
