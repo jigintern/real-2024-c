@@ -193,7 +193,9 @@ Deno.serve(async (req) => {
       //XMLソースを DOMオブジェクトに変換した物が入っている
       const respIssou = await fetch("https://fukuno.jig.jp/rss.xml");
       const rssContent = await respIssou.text();
-      const source=`${rssContent.slice(0, rssContent.lastIndexOf("<it"))}</channel></rss>`;
+      const source = `${
+        rssContent.slice(0, rssContent.lastIndexOf("<it"))
+      }</channel></rss>`;
       //console.log(source);
       const DOM = new DOMParser().parseFromString(
         source,
@@ -213,7 +215,11 @@ Deno.serve(async (req) => {
       const descriptionTarget = DOM.querySelectorAll(
         "rss > channel > item > description",
       );
-      for (let i = issouPageCount*(page-1); i < issouPageCount*page; i++) {
+      for (
+        let i = issouPageCount * (page - 1);
+        i < issouPageCount * page;
+        i++
+      ) {
         const title = titleTarget[i].innerText;
         const updated_at = dateTarget[i].innerText;
         const url = urlTarget[i].innerText;
@@ -232,9 +238,7 @@ Deno.serve(async (req) => {
           comments_count,
           username,
         });
-        console.log(updated_at);
       }
-      //console.log(Results);
 
       //ブログ一覧からスクレイピング
       /*
@@ -316,8 +320,6 @@ Deno.serve(async (req) => {
         );
         */
 
-      //console.log(Results);
-
       issouObj.push(...Results.map((item) => {
         return {
           title: item.title,
@@ -336,7 +338,6 @@ Deno.serve(async (req) => {
     obj.Issou = issouObj;
 
     console.log("show obj");
-    //console.log(obj);
     return new Response(JSON.stringify(obj), {
       headers: {
         "content-type": "application/json",
