@@ -127,18 +127,18 @@ function addNewContent(content, zIndex) {
 globalThis.onload = async () => {
   
     // ポップアップの要素を取得
-    const popup = document.getElementById('popup');
+    const popupBackground = document.getElementById('popup-background');
     const openPopupBtn = document.getElementById('openPopupBtn');
-    const closePopupBtn = document.getElementById('closePopupBtn');
+    const sendBtn = document.getElementById('sendBtn');
 
     // ポップアップを開く
     openPopupBtn.addEventListener('click', () => {
-        popup.style.display = 'flex';
-        console.log('niba');
+        const x = document.getElementById("popup-wrapper"); /*クラス名"popup-wrapper"のオブジェクトの配列を取得*/
+        x.classList.remove("is-hidden");
     });
 
     // ポップアップを閉じる
-    closePopupBtn.addEventListener('click', () => {
+    sendBtn.addEventListener('click', () => {
         // 単語検索窓の内容を取得
         const searchInputValue = document.getElementById('searchInput').value;
 
@@ -153,15 +153,22 @@ globalThis.onload = async () => {
         console.log("オプション2:", checkbox2);
         console.log("オプション3:", checkbox3);
 
-        // ポップアップを閉じる
-        popup.style.display = 'none';
+        const x = document.getElementById("popup-wrapper");
+        x.classList.add("is-hidden");
     });
+
+    popupBackground.addEventListener('click', () => {
+      const x = document.getElementById("popup-wrapper");
+      x.classList.add("is-hidden");
+    });
+
     const response = await fetch("/article?qiita=true&zenn=true&issou=true");
     const resJson = await response.json();
     articles = [...resJson.Qiita, ...resJson.Zenn, ...resJson.Issou];
     // ! 記事をシャッフル !
     addNewContent(genArticle(), 999);
 };
+
 
 let zIndex = 998;
 // 3秒ごとに新しいコンテンツを追加

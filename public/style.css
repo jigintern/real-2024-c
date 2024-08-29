@@ -22,6 +22,7 @@ main {
   background-repeat: no-repeat;
   background-size: 100%;
   overflow: hidden;
+
 }
 
 #feed-container {
@@ -105,17 +106,32 @@ main {
   padding: 10px 20px;
 }
 
-#popup {
-  display: none;
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 2000;
-  background-color: rgba(0, 0, 0, 0.5);
+#popup-wrapper {
+  width: 100vw; /*画面に大きさを合わせる*/
+  height: 100vh;
+  position: fixed; /*ラッパーの左上隅を画面左上に固定*/
+  top: 0px;
+  left: 0px;
   justify-content: center;
   align-items: center;
+  display: flex;
+  z-index: 2000;
+}
+
+#popup-background{
+  position: fixed;
+  width: 100%; /*ラッパー全体を覆うようにする*/
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /*半透明の黒*/
+  z-index: 1999;
+}
+
+.is-hidden{
+  visibility: hidden;
+}
+
+#popup {
+  z-index: 2000;
 }
 
 .popup-content {
