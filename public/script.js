@@ -1,7 +1,11 @@
 // 記事一覧
 let articles = [];
+
 // 分流作成モード (false: 通常, true: 分流作成)
 let createRiver = false;
+
+// 分流用の記事のリスト
+let riverArticles = [];
 
 // 記事を60個取得
 const getArticles = async (qiita, zenn, issou, str) => {
@@ -59,7 +63,7 @@ const getArticleHTMLElement = () => {
                 <div class="article">
                     <div class="top">
                         <div class="title">${title}&nbsp;...</div>
-                        <div class="description"><span id="upload-at">${date}</span> - ${summary}&nbsp;...</div>
+                        <div class="description"><span class="upload-at">${date}</span> - ${summary}&nbsp;...</div>
                     </div>
                     <div class="bottom">
                         <div class="info">
@@ -80,6 +84,25 @@ const getArticleHTMLElement = () => {
     return card;
 };
 
+// 記事をリストに追加
+const saveArticle = (contentElement) => {
+
+};
+
+// 作成した分流をサーバにへ
+const riverId = async (riverName, riverArticles) => {
+    const response = await fetch('/river', {
+        method: 'POST',
+        headers: {'Content-Type': 'application.json'},
+        body: JSON.stringify({
+            riverName: riverName,
+            articles: riverArticles
+        })
+    });
+    const uuid = response.riverId; // riverのuuidが返される
+    return uuid; // urlを返すようにした方がいい?
+};
+
 function addNewContent(content, zIndex) {
     const container = document.getElementById('feed-container');
     const newContentElement = document.createElement('div');
@@ -90,7 +113,27 @@ function addNewContent(content, zIndex) {
     container.appendChild(newContentElement);
 
     newContentElement.onclick = (event) => {
-        console.log("test");
+
+        const title = newContentElement.getElementsByClassName("title")[0]
+        const updatedAt = newContentElement.getElementsByClassName("upload-at")[0];
+        const url = (newContentElement.getElementsByClassName("article-link"))[0].getAttribute("href");
+        const description = newContentElement.getElementsByClassName("description")[0];
+        const likesCount = newContentElement.getElementsByClassName("counts")[0];
+        const CommentsCount = newContentElement.getElementsByClassName("counts")[1];
+
+        const riverArticle = {
+            title: title.innerText,
+            updated_at: updatedAt.innerText,
+            url: url,
+            description: description.innerText,
+            likes_counts: Number(likesCount.innerText),
+            comments_count: Number(CommentsCount.innerText)
+        };
+
+        // 同じ川に2つ以上の記事を流せないように
+        if (riverArticles.includes(riverArticle) === false) {
+            riverArticles.push(riverArticle);
+        }
     };
 
     // 初期位置
@@ -183,20 +226,24 @@ globalThis.onload = async () => {
     changeModeBtn.addEventListener('click', () => {
         if (createRiver === false) {
             createRiver = true;
+            console.log("Mode: Choose");
+            
             const articleLinks = document.querySelectorAll(".article-link");
             for (const articleLink of articleLinks) {
                 articleLink.style.pointerEvents = "none";
             }
-
+            
             const feedItems = document.querySelectorAll(".feed-item");
             for (const feedItem of feedItems) {
                 feedItem.addEventListener('click', () => {
                     
                 })
             }
-
+            
         } else {
             createRiver = false;
+            console.log("Mode: See");
+
             const articleLinks = document.querySelectorAll(".article-link");
             for (const articleLink of articleLinks) {
                 articleLink.style.pointerEvents = "auto";
@@ -225,17 +272,3 @@ setInterval( async () => {
       articles.unshift(...shuffleArray(await getArticles(qiita, zenn, issou, searchInputValue)));
     }
 }, 7000);
-
-// 作成した分流をサーバにへ
-const riverId = async (riverName, riverArticles) => {
-    const response = await fetch('/river', {
-        method: 'POST',
-        headers: {'Content-Type': 'application.json'},
-        body: JSON.stringify({
-            riverName: riverName,
-            articles: riverArticles
-        })
-    });
-    const uuid = response.riverId; // riverのuuidが返される
-    return uuid; // urlを返すようにした方がいい?
-};
