@@ -146,6 +146,15 @@ main {
   text-align: center;
 }
 
-h2 {
-  margin-top: 0;
+#create-river-btn {
+  position: fixed;
+  top: 10px;
+  left: 10px;
+  padding: 10px 20px;
+}
+#create-river-ok {
+  visibility: hidden;
+}
+#create-river-name {
+  visibility: hidden;
 }/*# sourceMappingURL=style.css.map */

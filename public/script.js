@@ -1,5 +1,7 @@
 // 記事一覧
 let articles = [];
+// 分流作成モード (false: 通常, true: 分流作成)
+let createRiver = false;
 
 // 記事を60個取得
 const getArticles = async (qiita, zenn, issou, str) => {
@@ -51,9 +53,9 @@ const getArticleHTMLElement = () => {
     const summary = removeSyntax(description).substring(0, 40);
     // サイトごとの処理
     const siteType = getSiteType(url);
-    const { from, icon } = siteInfo[siteType] || { icon: 'Unknown', icon: '' };
+    const { from, icon } = siteInfo[siteType] || { from: 'Unknown', icon: '' };
 
-    card = `<a href="${url}" target="_blank">
+    card = `<a href="${url}" target="_blank" class="article-link">
                 <div class="article">
                     <div class="top">
                         <div class="title">${title}&nbsp;...</div>
@@ -86,6 +88,8 @@ function addNewContent(content, zIndex) {
     newContentElement.innerHTML = content;
     newContentElement.style.zIndex = zIndex;
     container.appendChild(newContentElement);
+
+    newContentElement.onclick
 
     // 初期位置
     gsap.set(newContentElement, {
@@ -146,13 +150,16 @@ globalThis.onload = async () => {
     const popupBackground = document.getElementById('popup-background');
     const openPopupBtn = document.getElementById('openPopupBtn');
     const sendBtn = document.getElementById('sendBtn');
+    // 分流作成に必要な要素
+    const articleLink = document.querySelector('.article-link');
+    const changeModeBtn = document.getElementById('create-river-btn');
+    const chooseOkBtn = document.getElementById('create-river-ok');
 
     // ポップアップを開く
     openPopupBtn.addEventListener('click', () => {
         const x = document.getElementById("popup-wrapper"); /*クラス名"popup-wrapper"のオブジェクトの配列を取得*/
         x.classList.remove("is-hidden");
     });
-
     // ポップアップを閉じる
     sendBtn.addEventListener('click', () => {
         const x = document.getElementById("popup-wrapper");
@@ -164,6 +171,19 @@ globalThis.onload = async () => {
     popupBackground.addEventListener('click', () => {
       const x = document.getElementById("popup-wrapper");
       x.classList.add("is-hidden");
+    });
+
+    // モードの切り替え
+    changeModeBtn.addEventListener('click', () => {
+        if (createRiver) {
+            articleLink.addEventListener('click', function(e) {
+                e.preventDefault();
+                alert('Link was clicked!');
+
+                // タップした記事を保存
+                savedArticles = [];
+            })
+        }
     });
 
     // 記事のシャッフル
@@ -192,3 +212,17 @@ setInterval( async () => {
       articles.unshift(...shuffleArray(await getArticles(qiita, zenn, issou, searchInputValue)));
     }
 }, 7000);
+
+// 作成した分流をサーバにへ
+const riverId = async (riverName, riverArticles) => {
+    const response = await fetch('/river', {
+        method: 'POST',
+        headers: {'Content-Type': 'application.json'},
+        body: JSON.stringify({
+            riverName: riverName,
+            articles: riverArticles
+        })
+    });
+    const uuid = response.riverId; // riverのuuidが返される
+    return uuid; // urlを返すようにした方がいい?
+};
