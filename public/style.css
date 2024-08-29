@@ -1,5 +1,4 @@
 * {
-  box-sizing: border-box;
   margin: 0;
   padding: 0;
 }
@@ -14,81 +13,86 @@ img {
   height: auto;
 }
 
-a {
-  text-decoration: none;
-}
-
 i {
   font-size: 3rem;
 }
 
-p {
-  font-size: 1.6rem;
-  padding: 10px;
+main {
+  background-image: url(./images/river.png);
+  background-repeat: no-repeat;
+  background-size: 100%;
+  overflow: hidden;
 }
 
-.container {
-  background: #efefef;
-  min-height: 100vh;
-}
-
-#river {
+#feed-container {
+  position: relative;
   width: 100vw;
   height: 100vh;
-  position: relative;
   overflow: hidden;
 }
 
 .feed-item {
   position: absolute;
-  overflow: hidden;
-  transform-origin: center;
   width: 45%;
   height: 30%;
+  transform-origin: center;
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.card {
+.article {
   background: #fff;
-  border-radius: 15px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  box-sizing: border-box;
+  padding: 16px;
   margin-top: 20px;
-  height: 1000px;
+  transform-origin: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
-.card .top {
+.article .top {
   margin: 20px 20px 0 20px;
 }
-.card .top .title {
+.article .top .title {
   font-size: 2rem;
   font-weight: 800;
   padding-bottom: 10px;
   line-height: 2.5rem;
 }
-.card .top .description {
+.article .top .description {
   font-size: 1.6rem;
   font-weight: 300;
 }
-.card .bottom {
+.article .bottom {
   display: flex;
-  flex-wrap: wrap;
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-  margin: 10px 20px 15px 20px;
 }
-.card .bottom .info {
+.article .bottom .info {
   display: flex;
   flex-direction: row;
 }
-.card .bottom .info .likes {
+.article .bottom .info .likes {
   display: flex;
   flex-direction: row;
   align-items: center;
   margin-right: 25px;
 }
-.card .bottom .info .comments {
+.article .bottom .info .comments {
   display: flex;
   flex-direction: row;
   align-items: center;
 }
-.card .bottom .icon {
+.article .bottom .icon {
   width: 10%;
+}
+
+.counts {
+  font-size: 1.6rem;
+  padding: 10px;
 }/*# sourceMappingURL=style.css.map */

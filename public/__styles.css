@@ -1,0 +1,60 @@
+/* main */
+body {
+  background-image: url('./river.png'); /* 川の画像を背景に設定 */
+  background-repeat: no-repeat;
+  background-size: 100%;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  font-family: Arial, sans-serif;
+}
+
+.feed-container {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.feed-item {
+  position: absolute;
+  width: 45%; /* 固定の横幅 */
+  height: 30%; /* 固定の縦幅 */
+  overflow: hidden;
+  transform-origin: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
+}
+
+.article {
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 16px;
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+  transform-origin: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.title {
+  margin: 0;
+}
+
+.description {
+  color: #555;
+  margin: 8px 0;
+}
+
+.stats {
+  color: #777;
+  display: flex;
+  justify-content: space-between;
+  margin-top: 12px;
+}

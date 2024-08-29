@@ -72,7 +72,7 @@ async function addContent(content, zIndex) {
     await river.insertAdjacentHTML('beforeend', content);
     const card = document.querySelectorAll('.river .card:last-child')[0];
 
-    card.style.zIndex = zIndex;  
+    card.style.zIndex = zIndex;
     card.style.position = 'fixed';
     card.style.top = '-20%';
     card.style.left = '50%';
@@ -131,8 +131,8 @@ globalThis.onload = async () => {
     addContent(genArticle(), 0);
 };
 
-// let zIndex = 1;
-// setInterval(() => {
-//     addContent(genArticle(), zIndex);
-//     zIndex += 1;
-// }, 5000);
+let zIndex = 1;
+setInterval(() => {
+    addContent(genArticle(), zIndex);
+    zIndex += 1;
+}, 5000);
