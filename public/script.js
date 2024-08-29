@@ -108,6 +108,8 @@ const saveArticle = (element) => {
     if (riverArticles.filter((article) => article.title === riverArticle.title).length === 0) {
         riverArticles.push(riverArticle);
     }
+
+    console.log(riverArticles);
 };
 
 // 作成した分流をサーバにへ
@@ -120,8 +122,9 @@ const riverId = async (riverName, riverArticles) => {
             articles: riverArticles
         })
     });
-    const uuid = response.riverId; // riverのuuidが返される
-    return uuid; // urlを返すようにした方がいい?
+
+    const uuid = await response.json();
+    return `${location.origin}?riverId=${uuid.riverId}`;
 };
 
 function addNewContent(content, zIndex) {
@@ -134,26 +137,7 @@ function addNewContent(content, zIndex) {
   container.appendChild(newContentElement);
 
     newContentElement.onclick = (event) => {
-        const title = newContentElement.getElementsByClassName("title")[0]
-        const updatedAt = newContentElement.getElementsByClassName("upload-at")[0];
-        const url = (newContentElement.getElementsByClassName("article-link"))[0].getAttribute("href");
-        const description = newContentElement.getElementsByClassName("description")[0];
-        const likesCount = newContentElement.getElementsByClassName("counts")[0];
-        const CommentsCount = newContentElement.getElementsByClassName("counts")[1];
-
-        const riverArticle = {
-            title: title.innerText,
-            updated_at: updatedAt.innerText,
-            url: url,
-            description: description.innerText,
-            likes_counts: Number(likesCount.innerText),
-            comments_count: Number(CommentsCount.innerText)
-        };
-
-        // 同じ川に2つ以上の記事を流せないように
-        if (riverArticles.filter((article) => article.title === riverArticle.title).length === 0) {
-            riverArticles.push(riverArticle);
-        }
+        saveArticle(newContentElement);
     };  
 
     // 初期位置
@@ -247,9 +231,10 @@ globalThis.onload = async () => {
     // 分流作成に必要な要素
     const changeModeBtn = document.getElementById('create-river-btn');
     const chooseOkBtn = document.getElementById('create-river-ok');
+    const submitName = document.getElementById('create-river-name');
     const createDone = document.getElementById('create-river-done');
     const createCancel = document.getElementById('create-river-cancel');
-    
+
     // モードの切り替え
     changeModeBtn.addEventListener('click', () => {
         // 川の作成モード
@@ -266,10 +251,25 @@ globalThis.onload = async () => {
             for (const feedItem of feedItems) {
                 feedItem.addEventListener('click', () => {
                     // リストに保存しておく
+                    saveArticle(feedItem);
                 })
             }
 
+            // リストの確定
             chooseOkBtn.style.visibility = 'visible';
+            chooseOkBtn.addEventListener('click', async () => {
+                createRiver = false;
+                const url = await riverId("", riverArticles);
+                alert(url);
+            })
+
+
+            // キャンセル
+            createCancel.style.visibility = 'visible';
+            createCancel.addEventListener('click', () => {
+                createRiver = false;
+                articleLinks = [];
+            })
             
         // 通常モード
         } else {

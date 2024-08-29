@@ -239,13 +239,22 @@ input[type=checkbox]:checked + .checkbox-icon {
   position: fixed;
   top: 60px;
   left: 10px;
-}
-#create-river-cancel {
-  visibility: hidden;
+  padding: 10px;
 }
 #create-river-name {
   visibility: hidden;
+  position: fixed;
+  top: 120px;
+  left: 10px;
+  padding: 10px;
 }
 #create-river-done {
   visibility: none;
+  position: fixed;
+  top: 180px;
+  left: 10px;
+  padding: 10px;
+}
+#create-river-cancel {
+  visibility: hidden;
 }/*# sourceMappingURL=style.css.map */

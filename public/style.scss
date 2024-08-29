@@ -245,15 +245,23 @@ label {
         position: fixed;
         top: 60px;
         left: 10px;
-        // padding: 10px 20px;
-    }
-    &-cancel {
-        visibility: hidden;
+        padding: 10px;
     }
     &-name {
         visibility: hidden;
+        position: fixed;
+        top: 120px;
+        left: 10px;
+        padding: 10px;
     }
     &-done {
         visibility: none;
+        position: fixed;
+        top: 180px;
+        left: 10px;
+        padding: 10px;
+    }
+    &-cancel {
+        visibility: hidden;
     }
 }
