@@ -14,6 +14,27 @@
     <header></header>
     <main>
       <div id="feed-container"></div>
+      
+      <button id="openPopupBtn">婆</button>
+
+        <!-- ポップアップ -->
+      <div id="popup" class="popup">
+        <div class="popup-content">
+          <h2>検索設定</h2>
+            <!-- 単語検索窓 -->
+          <input type="text" id="searchInput" placeholder="単語を入力してください">
+
+            <!-- チェックボックス -->
+          <div>
+            <label><input type="checkbox" id="checkbox1"> オプション1</label><br>
+            <label><input type="checkbox" id="checkbox2"> オプション2</label><br>
+            <label><input type="checkbox" id="checkbox3"> オプション3</label><br>
+          </div>
+
+            <!-- 閉じるボタン -->
+            <button id="closePopupBtn">閉じる</button>
+        </div>
+      </div>
     </main>
     <footer></footer>
   </body>

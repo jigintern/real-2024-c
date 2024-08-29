@@ -125,6 +125,37 @@ function addNewContent(content, zIndex) {
 };
 
 globalThis.onload = async () => {
+  
+    // ポップアップの要素を取得
+    const popup = document.getElementById('popup');
+    const openPopupBtn = document.getElementById('openPopupBtn');
+    const closePopupBtn = document.getElementById('closePopupBtn');
+
+    // ポップアップを開く
+    openPopupBtn.addEventListener('click', () => {
+        popup.style.display = 'flex';
+        console.log('niba');
+    });
+
+    // ポップアップを閉じる
+    closePopupBtn.addEventListener('click', () => {
+        // 単語検索窓の内容を取得
+        const searchInputValue = document.getElementById('searchInput').value;
+
+        // チェックボックスの状態を取得
+        const checkbox1 = document.getElementById('checkbox1').checked;
+        const checkbox2 = document.getElementById('checkbox2').checked;
+        const checkbox3 = document.getElementById('checkbox3').checked;
+
+        // データをコンソールに表示
+        console.log("検索ワード:", searchInputValue);
+        console.log("オプション1:", checkbox1);
+        console.log("オプション2:", checkbox2);
+        console.log("オプション3:", checkbox3);
+
+        // ポップアップを閉じる
+        popup.style.display = 'none';
+    });
     const response = await fetch("/article?qiita=true&zenn=true&issou=true");
     const resJson = await response.json();
     articles = [...resJson.Qiita, ...resJson.Zenn, ...resJson.Issou];
