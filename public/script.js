@@ -55,7 +55,7 @@ const getArticleHTMLElement = () => {
     const siteType = getSiteType(url);
     const { from, icon } = siteInfo[siteType] || { from: 'Unknown', icon: '' };
 
-    card = `<a href="${url}" target="_blank" class="article-link">
+    card = `<a href="${url}" target="_blank" class="article-link" ${createRiver ? 'style="pointer-events: none;"' : ''}>
                 <div class="article">
                     <div class="top">
                         <div class="title">${title}&nbsp;...</div>
@@ -150,11 +150,7 @@ globalThis.onload = async () => {
     const popupBackground = document.getElementById('popup-background');
     const openPopupBtn = document.getElementById('openPopupBtn');
     const sendBtn = document.getElementById('sendBtn');
-    // 分流作成に必要な要素
-    const articleLink = document.querySelector('.article-link');
-    const changeModeBtn = document.getElementById('create-river-btn');
-    const chooseOkBtn = document.getElementById('create-river-ok');
-
+    
     // ポップアップを開く
     openPopupBtn.addEventListener('click', () => {
         const x = document.getElementById("popup-wrapper"); /*クラス名"popup-wrapper"のオブジェクトの配列を取得*/
@@ -172,25 +168,35 @@ globalThis.onload = async () => {
       const x = document.getElementById("popup-wrapper");
       x.classList.add("is-hidden");
     });
-
-    // モードの切り替え
-    changeModeBtn.addEventListener('click', () => {
-        if (createRiver) {
-            articleLink.addEventListener('click', function(e) {
-                e.preventDefault();
-                alert('Link was clicked!');
-
-                // タップした記事を保存
-                savedArticles = [];
-            })
-        }
-    });
-
+    
     // 記事のシャッフル
     articles = shuffleArray(await getArticles(1, 1, 1, ""));
     addNewContent(getArticleHTMLElement(), 999);
+    
+    // 分流作成に必要な要素
+    const changeModeBtn = document.getElementById('create-river-btn');
+    const chooseOkBtn = document.getElementById('create-river-ok');
+    
+    // モードの切り替え
+    changeModeBtn.addEventListener('click', () => {
+        if (createRiver === false) {
+            createRiver = true;
+            const articleLinks = document.querySelectorAll(".article-link");
+            for (const articleLink of articleLinks) {
+                articleLink.style.pointerEvents = "none";
+            }
+        } else {
+            createRiver = false;
+            const articleLinks = document.querySelectorAll(".article-link");
+            for (const articleLink of articleLinks) {
+                articleLink.style.pointerEvents = "auto";
+            }
+        }
+        
+        // タップした記事を保存
+        savedArticles = [];
+    });
 };
-
 
 let zIndex = 998;
 // 7秒ごとに新しいコンテンツを追加
