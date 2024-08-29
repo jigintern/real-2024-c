@@ -14,6 +14,30 @@
     <header></header>
     <main>
       <div id="feed-container"></div>
+      
+      <button id="openPopupBtn">婆</button>
+
+      <div id="popup-wrapper" class="is-hidden">
+        <div id="popup-background"></div>
+          <!-- ポップアップ -->
+        <div id="popup" class="popup">
+          <div class="popup-content">
+            <h2>検索設定</h2>
+              <!-- 単語検索窓 -->
+            <input type="text" id="searchInput" placeholder="単語を入力してください">
+
+              <!-- チェックボックス -->
+            <div>
+              <label><input type="checkbox" id="qiita-icon" checked> Qiita</label><br>
+              <label><input type="checkbox" id="zenn-icon" checked> Zenn</label><br>
+              <label><input type="checkbox" id="issou-icon" checked> Issou</label><br>
+            </div>
+
+              <!-- 閉じるボタン -->
+              <button id="sendBtn">送信</button>
+          </div>
+        </div>
+      </div>
     </main>
     <footer></footer>
   </body>

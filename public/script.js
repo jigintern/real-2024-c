@@ -2,8 +2,9 @@
 let articles = [];
 
 // 記事を60個取得
-const getArticles = async (qiita, zenn, issou) => {
-    const response = await fetch(`/article?qiita=${qiita}&zenn=${zenn}&issou=${issou}`);
+const getArticles = async (qiita, zenn, issou, str) => {
+    console.log(str);
+    const response = await fetch(`/article?qiita=${qiita}&zenn=${zenn}&issou=${issou}${(str !== "")? `&q=${str}` : ""}`);
     const resJson = await response.json();
     const articlesAll = [...resJson.Qiita, ...resJson.Zenn, ...resJson.Issou];
     return articlesAll;
@@ -140,27 +141,54 @@ const shuffleArray = (array) => {
 
 // ページが読み込まれたとき
 globalThis.onload = async () => {
-    const qiita = 1;
-    const zenn = 1;
-    const issou = 1;
+  
+    // ポップアップの要素を取得
+    const popupBackground = document.getElementById('popup-background');
+    const openPopupBtn = document.getElementById('openPopupBtn');
+    const sendBtn = document.getElementById('sendBtn');
+
+    // ポップアップを開く
+    openPopupBtn.addEventListener('click', () => {
+        const x = document.getElementById("popup-wrapper"); /*クラス名"popup-wrapper"のオブジェクトの配列を取得*/
+        x.classList.remove("is-hidden");
+    });
+
+    // ポップアップを閉じる
+    sendBtn.addEventListener('click', () => {
+        const x = document.getElementById("popup-wrapper");
+        x.classList.add("is-hidden");
+
+        articles.splice(1)
+    });
+
+    popupBackground.addEventListener('click', () => {
+      const x = document.getElementById("popup-wrapper");
+      x.classList.add("is-hidden");
+    });
 
     // 記事のシャッフル
-    articles = shuffleArray(await getArticles(qiita, zenn, issou));
+    articles = shuffleArray(await getArticles(1, 1, 1, ""));
     addNewContent(getArticleHTMLElement(), 999);
 };
 
+
 let zIndex = 998;
-// 3秒ごとに新しいコンテンツを追加
+// 7秒ごとに新しいコンテンツを追加
 setInterval( async () => {
     addNewContent(getArticleHTMLElement(), zIndex);
     zIndex -= 1;
     
     // 記事が無くなった場合の再アクセス
     if (articles.length <= 5) {
-        let qiita = 1;
-        let zenn = 1;
-        let issou = 1;
+      const searchInputValue = document.getElementById('searchInput').value;
+      const qiitaIcon = document.getElementById('qiita-icon').checked;
+      const zennIcon = document.getElementById('zenn-icon').checked;
+      const issouIcon = document.getElementById('issou-icon').checked;
+      
+      const qiita = (qiitaIcon == true)? 1 : 0;
+      const zenn = (zennIcon == true)? 1 : 0;
+      const issou = (issouIcon == true)? 1 : 0;
 
-        articles.unshift(...shuffleArray(await getArticles(qiita, zenn, issou)));
+      articles.unshift(...shuffleArray(await getArticles(qiita, zenn, issou, searchInputValue)));
     }
 }, 7000);

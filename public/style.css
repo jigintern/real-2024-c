@@ -1,3 +1,4 @@
+@charset "UTF-8";
 * {
   margin: 0;
   padding: 0;
@@ -100,4 +101,51 @@ main {
 .counts {
   font-size: 1.6rem;
   padding: 0 0.6rem 0 0.6rem;
+}
+
+#openPopupBtn {
+  position: fixed;
+  top: 10px;
+  right: 10px;
+  padding: 10px 20px;
+}
+
+#popup-wrapper {
+  width: 100vw; /*画面に大きさを合わせる*/
+  height: 100vh;
+  position: fixed; /*ラッパーの左上隅を画面左上に固定*/
+  top: 0px;
+  left: 0px;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  z-index: 2000;
+}
+
+#popup-background {
+  position: fixed;
+  width: 100%; /*ラッパー全体を覆うようにする*/
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /*半透明の黒*/
+  z-index: 1999;
+}
+
+.is-hidden {
+  visibility: hidden;
+}
+
+#popup {
+  z-index: 2000;
+}
+
+.popup-content {
+  background-color: white;
+  padding: 20px;
+  border-radius: 5px;
+  width: 300px;
+  text-align: center;
+}
+
+h2 {
+  margin-top: 0;
 }/*# sourceMappingURL=style.css.map */
