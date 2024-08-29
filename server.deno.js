@@ -4,7 +4,6 @@ import { DOMParser } from "https://deno.land/x/deno_dom/deno-dom-wasm.ts";
 
 //表示するページを変更するための変数
 let page = 0;
-//let keyWord="3D";
 const zennPageCount=20;
 const issouPageCount=20;
 let flag=true
@@ -14,7 +13,7 @@ Deno.serve(async (req) => {
   console.log(pathname);
 
   //データベースにアクセス
-  const kv = await Deno.openKv(Deno.env.get("DENO_KV_URL"));
+  const kv = await Deno.openKv(Deno.env.get("DENOKV_URL"));
 
   //クエリパラメータを取得
   const param = new URL(req.url).searchParams;
@@ -22,7 +21,7 @@ Deno.serve(async (req) => {
   const zenn = param.get("zenn") === "0" ? false : true;
   const issou = param.get("issou") === "0" ? false : true;
   const keyWord = param.get("q") ||"";
-  const river_id=param.get("river_id");
+  const riverId=param.get("riverId");
 
   //レスポンス用のJSON変数
   let obj = { "Qiita": [], "Zenn": [], "Issou": [] };
@@ -35,14 +34,14 @@ Deno.serve(async (req) => {
     // リクエストのペイロードを取得
     const requestJson = await req.json();
 
-    const river_name=requestJson.river_name;
+    const riverName=requestJson.riverName;
     const articles=requestJson.articles;
 
     //ハッシュ値生成
     const uuid = self.crypto.randomUUID();
     const key=["river",uuid];
     const value={
-      "river_name":river_name,
+      "riverName":riverName,
       "articles": articles,
     }
 
@@ -51,17 +50,17 @@ Deno.serve(async (req) => {
 
     return Response.json({ 
       status:200,  
-      river_id: uuid,
+      riverId: uuid,
     });
   }
   
   if (req.method === "GET" && pathname === "/river"){
     console.log("GET");
-    if(! river_id){
-      return Response.redirect("http://localhost:8000/article", 302);
+    if(! riverId){
+      return Response.redirect("https://gijudon.deno.dev/", 302);
     }
 
-    const getResult = await kv.get(["river",river_id]);
+    const getResult = await kv.get(["river",riverId]);
 
     //console.log(getResult);
     const requestValue=getResult.value;
