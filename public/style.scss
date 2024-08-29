@@ -160,7 +160,8 @@ margin: auto 64px;
 }
 
 .popup-content {
-background-color: white;
+background-image: url(./images/peach.png);
+background-size: contain;
 padding: 32px;
 border-radius: 16px;
 width: 300px;
@@ -171,28 +172,29 @@ flex-direction: column;
 }
 
 h2 {
-   // padding: 20px;
-//margin-top: 0;
-margin-bottom: 16px;
+margin-top: 15px;
+margin-bottom: 8px;
 }
 
 .search_container{
     box-sizing: border-box;
     border: 1px solid #999;
     border-radius: 20px;
+    background-color: #fff;
 
     height: 5rem;
-    width: 80%;
+    width: 70%;
 
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 10px;
-    margin-bottom: 20px;
+    padding: 7px;
+    margin-bottom: 5px;
 }
 .search_container input[type="text"]{
     border: none;
-    height: 2.0em;
+    height: 2em;
+    width: 48%;
 }
 .search_container input[type="text"]:focus {
     outline: 0;
@@ -204,8 +206,8 @@ margin-bottom: 16px;
     border: none;
     background: none;
     color: #3879D9;
-    width: 2.5rem;
-    height: 2.5rem;
+    width: 2rem;
+    height: 2rem;
     outline : none;
 }
 
