@@ -49,7 +49,7 @@ main {
 
 .article {
     background: #fff;
-    border-radius: 8px;
+    border-radius: 16px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     padding: 15px;
     transform-origin: center;
@@ -112,47 +112,120 @@ main {
 
 #openPopupBtn {
     position: fixed;
-    top: 10px;
-    right: 10px;
-    padding: 10px 20px;
+    top: 30px;
+    right: -200px;
+    padding: 0;
+    border: none;
+    background: transparent;
+    img.grandma {
+        width: 20%;
+        height: 20%;
+    }
+}
+
+#popup-wrapper {
+width: 100vw; /*画面に大きさを合わせる*/
+height: 100vh;
+position: fixed; /*ラッパーの左上隅を画面左上に固定*/
+top: 0px;
+left: 0px;
+justify-content: center;
+align-items: center;
+display: flex;
+z-index: 2000;
+}
+
+#popup-background{
+position: fixed;
+width: 100%; /*ラッパー全体を覆うようにする*/
+height: 100%;
+background-color: rgba(0, 0, 0, 0.5); /*半透明の黒*/
+z-index: 1999;
+}
+
+.is-hidden{
+visibility: hidden;
+}
+
+#popup {
+z-index: 2000;
+margin: auto 64px;
+}
+
+.popup-content {
+background-color: white;
+padding: 32px;
+border-radius: 16px;
+width: 300px;
+text-align: center;
+}
+
+h2 {
+   // padding: 20px;
+//margin-top: 0;
+margin-bottom: 16px;
+}
+
+.search_container{
+    box-sizing: border-box;
+    position: relative;
+    border: 1px solid #999;
+    padding: 3px 10px;
+    border-radius: 20px;
+    height: 2.3em;
+    width: 260px;
+    overflow: hidden;
+}
+.search_container input[type="text"]{
+    border: none;
+    height: 2.0em;
+}
+.search_container input[type="text"]:focus {
+    outline: 0;
+}
+.search_container input[type="submit"]{
+    cursor: pointer;
+    font-family: FontAwesome;
+    font-size: 1.3em;
+    border: none;
+    background: none;
+    color: #3879D9;
+    position: absolute;
+    width: 2.5em;
+    height: 2.5em;
+    right: 0;
+    outline : none;
+}
+
+/* チェックボックスを非表示にする */
+.checkbox-icon {
+    padding: 8px;
+    display: block;
+    width: 48px; /* アイコンの幅 */
+    height: 48px; /* アイコンの高さ */
+    margin-right: 8px;
+    cursor: pointer; /* 画像がクリック可能であることを示すカーソル */
+  }
+/* チェックボックスが画像の下に重なるように調整 */
+label {
+    display: inline-block;
+    position: relative;
   }
   
-  #popup-wrapper {
-    width: 100vw; /*画面に大きさを合わせる*/
-    height: 100vh;
-    position: fixed; /*ラッパーの左上隅を画面左上に固定*/
-    top: 0px;
-    left: 0px;
-    justify-content: center;
-    align-items: center;
-    display: flex;
-    z-index: 2000;
+  /* チェックボックスを非表示にする */
+  input[type="checkbox"] {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer; /* チェックボックスもクリック可能であることを示すカーソル */
   }
   
-  #popup-background{
-    position: fixed;
-    width: 100%; /*ラッパー全体を覆うようにする*/
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5); /*半透明の黒*/
-    z-index: 1999;
+  /* チェック状態のスタイルを追加（必要に応じて） */
+  input[type="checkbox"]:checked + .checkbox-icon {
+    /* チェックボックスがチェックされている場合のスタイル */
+    border-radius: 8px;
+    background-color: skyblue;
   }
-  
-  .is-hidden{
-    visibility: hidden;
-  }
-  
-  #popup {
-    z-index: 2000;
-  }
-  
-  .popup-content {
-    background-color: white;
-    padding: 20px;
-    border-radius: 5px;
-    width: 300px;
-    text-align: center;
-  }
-  
-  h2 {
-    margin-top: 0;
-  }
+
+.checkbox-icon{
+    margin-bottom: 16px;
+}
