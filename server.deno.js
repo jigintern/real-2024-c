@@ -13,7 +13,7 @@ Deno.serve(async (req) => {
   console.log(pathname);
 
   //データベースにアクセス
-  //const kv = await Deno.openKv(Deno.env.get("DENOKV_URL"));
+  const kv = await Deno.openKv(Deno.env.get("DENOKV_URL"));
 
   //クエリパラメータを取得
   const param = new URL(req.url).searchParams;
@@ -70,9 +70,9 @@ Deno.serve(async (req) => {
   }
   if (req.method === "GET" && pathname === "/article") {
     page = 1 + (page % 100);
+
     //Qiitaから記事をとってくる
     if (qiita) {
-      //Qiita APIからJSON形式で記事を取得
       console.log("Qiita API");
 
       //トークン情報をヘッダーに登録
@@ -138,13 +138,6 @@ Deno.serve(async (req) => {
         zennDataSliced.push(resZennData.articles[i]);
       }
 
-      /*
-      console.log(
-        resZennData.articles.map((item) => {
-          return `title: ${item.title}`;
-        }),
-      );
-      */
       zennObj.push(...zennDataSliced.map((item) => {
         return {
           title: item.title,
@@ -158,37 +151,12 @@ Deno.serve(async (req) => {
       }));
     }
 
-    //Githubからリポジトリを取得
-    /*
-    const star=1000;
-    //トークン情報をヘッダーに登録
-    const reqGithub = new Request(
-      //
-      `https://api.github.com/repos`,
-      {
-        headers: {
-          "Authorization": `Bearer ${(Deno.env.get("GITHUB_API_TOKEN"))}`,
-          "Accept": "application/vnd.github.v3+json",
-        },
-      },
-    );
-    const resGithub = await fetch(reqGithub);
-    const resGithubData = await resGithub.json();
-    console.log(Deno.env.get("GITHUB_API_TOKEN"));
-    console.log(resGithubData);
-    console.log(
-      ...resGithubData.items.map((item) => {
-        return `title: ${item.title}`;
-      }),
-    );
-    */
-
+    //一日一創から記事を取得
     if (issou) {
       console.log("issou");
 
       //結果を格納する配列
       const Results = [];
-      //一日一創から情報を取得
       //RSS
       //XMLソースを DOMオブジェクトに変換した物が入っている
       const respIssou = await fetch("https://fukuno.jig.jp/rss.xml");
@@ -205,7 +173,6 @@ Deno.serve(async (req) => {
       const titleTarget = DOM.querySelectorAll(
         "rss > channel > item > title",
       );
-      console.log(titleTarget);
       const dateTarget = DOM.querySelectorAll(
         "rss > channel > item> pubDate",
       );
@@ -239,86 +206,6 @@ Deno.serve(async (req) => {
           username,
         });
       }
-
-      //ブログ一覧からスクレイピング
-      /*
-      await fetch(`https://fukuno.jig.jp/?q=${keyWord}`).then((resp) =>
-        resp.text()
-      )
-        .then(
-          async (source_all) => {
-            const domAll = new DOMParser().parseFromString(
-              source_all,
-              "text/html",
-            );
-            //一覧から各記事のURLを取得
-            const urlsAll = domAll.querySelectorAll("#cmain > div > a");
-            //ページを指定
-            //const urlsSliced=urlsAll.slice((issouPage++)*issouPageCount,issouPage*issouPageCount);
-            const urlsSliced = [];
-            for (
-              let i = (page - 1) * issouPageCount;
-              i < page * issouPageCount;
-              i++
-            ) {
-              urlsSliced.push(urlsAll[i]);
-            }
-
-            for (const item of urlsSliced) {
-              const resp = await fetch(item.getAttribute("href"));
-              const source = await resp.text();
-
-              //HTMLソースを DOMオブジェクトに変換した物が入っている
-              const DOM = new DOMParser().parseFromString(
-                source,
-                "text/html",
-              );
-              const titleTarget = DOM.querySelectorAll("#chead > a > h2");
-              const urlTarget = DOM.querySelectorAll("#chead > a");
-              const dateTarget = DOM.querySelectorAll(
-                "#content > div.datetime",
-              );
-              const pre_descriptionTarget = DOM.querySelectorAll(
-                ".article",
-              );
-              let descriptionTarget = [];
-              for (let j = 1; j < pre_descriptionTarget.length; j++) {
-                descriptionTarget.push(pre_descriptionTarget[j]);
-              }
-
-              for (let i = 0; i < titleTarget.length; i++) {
-                let title = titleTarget[i].innerText;
-                let updated_at = dateTarget[i].innerText;
-                let url = new URL(
-                  urlTarget[i].getAttribute("href"),
-                  "https://fukuno.jig.jp/",
-                ).href;
-
-                //descriptionを取得
-                let description = descriptionTarget[i].innerText.trim()
-                  .replace(/\s+/g, " ").substring(0, 60);
-                //"<h1><img hogegege>hoge</h1>".replace(/<("[^"]*"|'[^']*'|[^'">])*>/g,'')
-                //description.innerHTML.replace(/<("[^"]*"|'[^']*'|[^'">])*>/g, "");
-                //console.log(description);
-
-                let likes_count;
-                let comments_count;
-                let username;
-
-                Results.push({
-                  title,
-                  updated_at,
-                  url,
-                  description,
-                  likes_count,
-                  comments_count,
-                  username,
-                });
-              }
-            }
-          },
-        );
-        */
 
       issouObj.push(...Results.map((item) => {
         return {
