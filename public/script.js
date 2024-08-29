@@ -260,7 +260,7 @@ globalThis.onload = async () => {
             chooseOkBtn.addEventListener('click', async () => {
                 createRiver = false;
                 const url = await riverId("", riverArticles);
-                alert(url);
+                prompt("共有URL", url);
             })
 
 
