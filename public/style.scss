@@ -57,7 +57,10 @@ main {
     align-items: center;
 
     .top {
-        // margin: 20px 20px 0 20px;
+        display: flex;
+        flex-direction: column;
+        justify-content: left;
+
         .title {
             font-size: 1.3rem;
             font-weight: 700;

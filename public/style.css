@@ -53,6 +53,11 @@ main {
   justify-content: center;
   align-items: center;
 }
+.article .top {
+  display: flex;
+  flex-direction: column;
+  justify-content: left;
+}
 .article .top .title {
   font-size: 1.3rem;
   font-weight: 700;
