@@ -49,7 +49,7 @@ main {
 
 .article {
   background: #fff;
-  border-radius: 8px;
+  border-radius: 16px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   padding: 15px;
   transform-origin: center;
@@ -105,9 +105,15 @@ main {
 
 #openPopupBtn {
   position: fixed;
-  top: 10px;
-  right: 10px;
-  padding: 10px 20px;
+  top: 30px;
+  right: -200px;
+  padding: 0;
+  border: none;
+  background: transparent;
+}
+#openPopupBtn img.grandma {
+  width: 20%;
+  height: 20%;
 }
 
 #popup-wrapper {
@@ -136,16 +142,88 @@ main {
 
 #popup {
   z-index: 2000;
+  margin: auto 64px;
 }
 
 .popup-content {
   background-color: white;
-  padding: 20px;
-  border-radius: 5px;
+  padding: 32px;
+  border-radius: 16px;
   width: 300px;
-  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
 }
 
 h2 {
-  margin-top: 0;
+  margin-bottom: 16px;
+}
+
+.search_container {
+  box-sizing: border-box;
+  border: 1px solid #999;
+  border-radius: 20px;
+  height: 5rem;
+  width: 80%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  margin-bottom: 20px;
+}
+
+.search_container input[type=text] {
+  border: none;
+  height: 2em;
+}
+
+.search_container input[type=text]:focus {
+  outline: 0;
+}
+
+.search_container input[type=submit] {
+  cursor: pointer;
+  font-family: FontAwesome;
+  font-size: 2em;
+  border: none;
+  background: none;
+  color: #3879D9;
+  width: 2.5rem;
+  height: 2.5rem;
+  outline: none;
+}
+
+/* チェックボックスを非表示にする */
+.checkbox-icon {
+  padding: 8px;
+  display: block;
+  width: 48px; /* アイコンの幅 */
+  height: 48px; /* アイコンの高さ */
+  cursor: pointer; /* 画像がクリック可能であることを示すカーソル */
+}
+
+/* チェックボックスが画像の下に重なるように調整 */
+label {
+  display: inline-block;
+  position: relative;
+}
+
+/* チェックボックスを非表示にする */
+input[type=checkbox] {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer; /* チェックボックスもクリック可能であることを示すカーソル */
+}
+
+/* チェック状態のスタイルを追加（必要に応じて） */
+input[type=checkbox]:checked + .checkbox-icon {
+  /* チェックボックスがチェックされている場合のスタイル */
+  border-radius: 8px;
+  opacity: 1;
+}
+
+.checkbox-icon {
+  margin-bottom: 16px;
+  opacity: 0.5;
 }/*# sourceMappingURL=style.css.map */
