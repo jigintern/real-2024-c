@@ -7,6 +7,7 @@ let page = 0;
 //let keyWord="3D";
 const zennPageCount=20;
 const issouPageCount=20;
+let flag=true
 
 Deno.serve(async (req) => {
   const pathname = new URL(req.url).pathname;
@@ -65,11 +66,20 @@ Deno.serve(async (req) => {
 
     //Zennから記事をとってくる
     if (zenn) {
+      let zennPage;
+      if(page%2){
+        zennPage=page/2-0.5;
+      }
+      else{
+        zennPage=page/2;
+      }
+      flag=!flag;
+
       console.log("ZennAPI");
       keyWord.replace(/\s+/g,"");
       let zennUrl
       if(keyWord!=="") zennUrl=`https://zenn.dev/api/search?q=${keyWord}&order=alltime&source=articles&page=${page}`;
-      else zennUrl=`https://zenn.dev/api/articles?order=latest`
+      else zennUrl=`https://zenn.dev/api/articles?order=latest&page=${zennPage}`
       console.log(zennUrl);
       const resZenn = await fetch(
         zennUrl,
@@ -77,19 +87,22 @@ Deno.serve(async (req) => {
       const resZennData = await resZenn.json();
       const zennDataSliced = [];
             for (
-              let i = (page-1) * zennPageCount;
-              i < page * zennPageCount;
+              let i = flag * zennPageCount;
+              i < (flag+1) * zennPageCount;
               i++
             ) {
               zennDataSliced.push(resZennData.articles[i]);
             }
 
+          /*
       console.log(
         resZennData.articles.map((item) => {
           return `title: ${item.title}`;
         }),
       );
-
+      */
+      console.log(zennDataSliced);
+      console.log(zennPage);
       zennObj.push(...zennDataSliced.map((item) => {
         return {
           title: item.title,
