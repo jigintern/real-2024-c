@@ -77,73 +77,73 @@ function addNewContent(content, zIndex) {
     container.appendChild(newContentElement); // 末尾に div 追加
 
     // 初期位置の設定
-    gsap.set(newContentElement, {
-        scale: 0.3,
-        top: '4%',
-        left: '25%',
-    });
+    // gsap.set(newContentElement, {
+    //     scale: 0.3,
+    //     top: '4%',
+    //     left: '25%',
+    // });
 
-    // アニメーションを開始
-    gsap.to(newContentElement, {
-        duration: 10, /* アニメーションの速度を10秒に設定 */
-        motionPath: {
-            path: [
-                { x: `0%`, y: '0%' },
-                { x: `${Math.random() * 100 - 50}%`, y: '3%' },
-                { x: `${Math.random() * 200 - 100}%`, y: '20%' },
-                { x: `${Math.random() * 200 - 100}%`, y: '30%' },
-                { x: `${Math.random() * 200 - 100}%`, y: '50%' },
-            ],
-            align: "self",
-            relative: true,
-        },
-        top: '80%', // 下に流れるように
-        scale: 2.5, // 最後に拡大
-        ease: 'power2.in',
-        onUpdate: () => {
-            // 縦の長さを横の比率に合わせて調整
-            const aspectRatio = 16 / 9;
-            const currentWidth = newContentElement.offsetWidth;
-            newContentElement.style.height = `${currentWidth / aspectRatio}px`;
+    // // アニメーションを開始
+    // gsap.to(newContentElement, {
+    //     duration: 10, /* アニメーションの速度を10秒に設定 */
+    //     motionPath: {
+    //         path: [
+    //             { x: `0%`, y: '0%' },
+    //             { x: `${Math.random() * 100 - 50}%`, y: '3%' },
+    //             { x: `${Math.random() * 200 - 100}%`, y: '20%' },
+    //             { x: `${Math.random() * 200 - 100}%`, y: '30%' },
+    //             { x: `${Math.random() * 200 - 100}%`, y: '50%' },
+    //         ],
+    //         align: "self",
+    //         relative: true,
+    //     },
+    //     top: '80%', // 下に流れるように
+    //     scale: 2.5, // 最後に拡大
+    //     ease: 'power2.in',
+    //     onUpdate: () => {
+    //         // 縦の長さを横の比率に合わせて調整
+    //         const aspectRatio = 16 / 9;
+    //         const currentWidth = newContentElement.offsetWidth;
+    //         newContentElement.style.height = `${currentWidth / aspectRatio}px`;
 
-            // // フォントサイズとマージンの調整
-            // const title = newContentElement.querySelector('.title');
-            // const description = newContentElement.querySelector('.description');
-            // const counts = newContentElement.querySelector('.counts');
-            // const countts_icon = newContentElement.querySelector('i');
-            // const icon = newContentElement.querySelector('.icon');
+    //         // // フォントサイズとマージンの調整
+    //         // const title = newContentElement.querySelector('.title');
+    //         // const description = newContentElement.querySelector('.description');
+    //         // const counts = newContentElement.querySelector('.counts');
+    //         // const countts_icon = newContentElement.querySelector('i');
+    //         // const icon = newContentElement.querySelector('.icon');
 
-            // // フォントサイズの調整
-            // title.style.fontSize = `${currentWidth * 0.1}px `;
-            // description.style.fontSize = `${currentWidth * 0.05}px`;
-            // counts.style.fontSize = `${currentWidth * 0.05}px`;
-            // countts_icon.style.fontSize = `${currentWidth * 0.05}px`;
+    //         // // フォントサイズの調整
+    //         // title.style.fontSize = `${currentWidth * 0.1}px `;
+    //         // description.style.fontSize = `${currentWidth * 0.05}px`;
+    //         // counts.style.fontSize = `${currentWidth * 0.05}px`;
+    //         // countts_icon.style.fontSize = `${currentWidth * 0.05}px`;
             
-            // // widthの調整
-            // countts_icon.style.width = `${currentWidth * .03}px`;
-            // icon.style.width = `${currentWidth * 0.05}px`;
+    //         // // widthの調整
+    //         // countts_icon.style.width = `${currentWidth * .03}px`;
+    //         // icon.style.width = `${currentWidth * 0.05}px`;
 
-            // // マージンの調整
-            // const marginSize = currentWidth * 0.02; // コンテンツ幅の2%をマージンに設定
-            // title.style.marginBottom = `${marginSize}px`;
-            // description.style.margin = `${marginSize}px 0`;
-            // counts.style.marginTop = `${marginSize * 2}px`;
-        },
-        onComplete: () => {
-            // アニメーションが終了したら要素を削除
-            container.removeChild(newContentElement);
-        }
-    });
+    //         // // マージンの調整
+    //         // const marginSize = currentWidth * 0.02; // コンテンツ幅の2%をマージンに設定
+    //         // title.style.marginBottom = `${marginSize}px`;
+    //         // description.style.margin = `${marginSize}px 0`;
+    //         // counts.style.marginTop = `${marginSize * 2}px`;
+    //     },
+    //     onComplete: () => {
+    //         // アニメーションが終了したら要素を削除
+    //         container.removeChild(newContentElement);
+    //     }
+    // });
 
-    // 浮き沈みアニメーションを追加
-    gsap.to(newContentElement, {
-        duration: 1, // 浮き沈みのスピード
-        y: "+=10", // 下に20px移動
-        repeat: -1, // 無限に繰り返す
-        yoyo: true, // 元の位置に戻る
-        ease: "sine.inOut", // 浮き沈みをスムーズに
-        rotation: Math.random() * 20 - 10,
-    });
+    // // 浮き沈みアニメーションを追加
+    // gsap.to(newContentElement, {
+    //     duration: 1, // 浮き沈みのスピード
+    //     y: "+=10", // 下に20px移動
+    //     repeat: -1, // 無限に繰り返す
+    //     yoyo: true, // 元の位置に戻る
+    //     ease: "sine.inOut", // 浮き沈みをスムーズに
+    //     rotation: Math.random() * 20 - 10,
+    // });
 };
 
 globalThis.onload = async () => {
