@@ -4,9 +4,9 @@ import { DOMParser } from "https://deno.land/x/deno_dom/deno-dom-wasm.ts";
 
 //表示するページを変更するための変数
 let page = 0;
-const zennPageCount=20;
-const issouPageCount=5;
-let flag=true
+const zennPageCount = 20;
+const issouPageCount = 20;
+let flag = true;
 
 Deno.serve(async (req) => {
   const pathname = new URL(req.url).pathname;
@@ -20,8 +20,8 @@ Deno.serve(async (req) => {
   const qiita = param.get("qiita") === "0" ? false : true;
   const zenn = param.get("zenn") === "0" ? false : true;
   const issou = param.get("issou") === "0" ? false : true;
-  const keyWord = param.get("q") ||"";
-  const riverId=param.get("riverId");
+  const keyWord = param.get("q") || "";
+  const riverId = param.get("riverId");
 
   //レスポンス用のJSON変数
   let obj = { "Qiita": [], "Zenn": [], "Issou": [] };
@@ -29,56 +29,55 @@ Deno.serve(async (req) => {
   let qiitaObj = [];
   let issouObj = [];
 
-  if (req.method === "POST" && pathname === "/river"){
+  if (req.method === "POST" && pathname === "/river") {
     console.log("POST");
     // リクエストのペイロードを取得
     const requestJson = await req.json();
 
-    const riverName=requestJson.riverName;
-    const articles=requestJson.articles;
+    const riverName = requestJson.riverName;
+    const articles = requestJson.articles;
 
     //ハッシュ値生成
     const uuid = self.crypto.randomUUID();
-    const key=["river",uuid];
-    const value={
-      "riverName":riverName,
+    const key = ["river", uuid];
+    const value = {
+      "riverName": riverName,
       "articles": articles,
-    }
+    };
 
     const result = await kv.set(key, value);
     console.log(result);
 
-    return Response.json({ 
-      status:200,  
+    return Response.json({
+      status: 200,
       riverId: uuid,
     });
   }
-  
-  if (req.method === "GET" && pathname === "/river"){
+
+  if (req.method === "GET" && pathname === "/river") {
     console.log("GET");
-    if(! riverId){
+    if (!riverId) {
       return Response.redirect("https://gijudon.deno.dev/", 302);
     }
 
-    const getResult = await kv.get(["river",riverId]);
+    const getResult = await kv.get(["river", riverId]);
 
     //console.log(getResult);
-    const requestValue=getResult.value;
-    return Response.json({ 
-      requestValue
+    const requestValue = getResult.value;
+    return Response.json({
+      requestValue,
     });
-
   }
   if (req.method === "GET" && pathname === "/article") {
     page = 1 + (page % 100);
+
     //Qiitaから記事をとってくる
     if (qiita) {
-      //Qiita APIからJSON形式で記事を取得
       console.log("Qiita API");
 
       //トークン情報をヘッダーに登録
       const reqQiita = new Request(
-        // 
+        //
         `https://qiita.com/api/v2/items?page=${page}&per_page=20&sort=stock&query=title:${keyWord}`,
         {
           headers: {
@@ -110,40 +109,35 @@ Deno.serve(async (req) => {
     //Zennから記事をとってくる
     if (zenn) {
       let zennPage;
-      if(page%2){
-        zennPage=page/2-0.5;
+      if (page % 2) {
+        zennPage = page / 2 - 0.5;
+      } else {
+        zennPage = page / 2;
       }
-      else{
-        zennPage=page/2;
-      }
-      flag=!flag;
+      flag = !flag;
 
       console.log("ZennAPI");
-      keyWord.replace(/\s+/g,"");
-      let zennUrl
-      if(keyWord!=="") zennUrl=`https://zenn.dev/api/search?q=${keyWord}&order=alltime&source=articles&page=${page}`;
-      else zennUrl=`https://zenn.dev/api/articles?order=latest&page=${zennPage}`
+      keyWord.replace(/\s+/g, "");
+      let zennUrl;
+      if (keyWord !== "") {
+        zennUrl =
+          `https://zenn.dev/api/search?q=${keyWord}&order=alltime&source=articles&page=${page}`;
+      } else {zennUrl =
+          `https://zenn.dev/api/articles?order=latest&page=${zennPage}`;}
       console.log(zennUrl);
       const resZenn = await fetch(
         zennUrl,
       );
       const resZennData = await resZenn.json();
       const zennDataSliced = [];
-            for (
-              let i = flag * zennPageCount;
-              i < (flag+1) * zennPageCount;
-              i++
-            ) {
-              zennDataSliced.push(resZennData.articles[i]);
-            }
+      for (
+        let i = flag * zennPageCount;
+        i < (flag + 1) * zennPageCount;
+        i++
+      ) {
+        zennDataSliced.push(resZennData.articles[i]);
+      }
 
-          /*
-      console.log(
-        resZennData.articles.map((item) => {
-          return `title: ${item.title}`;
-        }),
-      );
-      */
       zennObj.push(...zennDataSliced.map((item) => {
         return {
           title: item.title,
@@ -152,121 +146,66 @@ Deno.serve(async (req) => {
           description: "",
           likes_count: item.liked_count,
           comments_count: item.comments_count,
-          username: item.user.id,//usernameだと設定していない人がいるため
+          username: item.user.id, //usernameだと設定していない人がいるため
         };
       }));
     }
 
-    
-    //Githubからリポジトリを取得
-    /*
-    const star=1000;
-    //トークン情報をヘッダーに登録
-    const reqGithub = new Request(
-      // 
-      `https://api.github.com/repos`,
-      {
-        headers: {
-          "Authorization": `Bearer ${(Deno.env.get("GITHUB_API_TOKEN"))}`,
-          "Accept": "application/vnd.github.v3+json",
-        },
-      },
-    );
-    const resGithub = await fetch(reqGithub);
-    const resGithubData = await resGithub.json();
-    console.log(Deno.env.get("GITHUB_API_TOKEN"));
-    console.log(resGithubData);
-    console.log(
-      ...resGithubData.items.map((item) => {
-        return `title: ${item.title}`;
-      }),
-    );
-    */
-    
-
+    //一日一創から記事を取得
     if (issou) {
       console.log("issou");
 
       //結果を格納する配列
       const Results = [];
-      //一日一創から情報を取得
-      //ブログ一覧からスクレイピング
-      await fetch(`https://fukuno.jig.jp/?q=${keyWord}`).then((resp) => resp.text())
-        .then(
-          async (source_all) => {
-            const domAll = new DOMParser().parseFromString(
-              source_all,
-              "text/html",
-            );
-            //一覧から各記事のURLを取得
-            const urlsAll = domAll.querySelectorAll("#cmain > div > a");
-            //ページを指定
-            //const urlsSliced=urlsAll.slice((issouPage++)*issouPageCount,issouPage*issouPageCount);
-            const urlsSliced = [];
-            for (
-              let i = (page-1) * issouPageCount;
-              i < page * issouPageCount;
-              i++
-            ) {
-              urlsSliced.push(urlsAll[i]);
-            }
+      //RSS
+      //XMLソースを DOMオブジェクトに変換した物が入っている
+      const respIssou = await fetch("https://fukuno.jig.jp/rss.xml");
+      const rssContent = await respIssou.text();
+      const source = `${
+        rssContent.slice(0, rssContent.lastIndexOf("<it"))
+      }</channel></rss>`;
+      //console.log(source);
+      const DOM = new DOMParser().parseFromString(
+        source,
+        "text/html",
+      );
 
-            for (const item of urlsSliced) {
-              const resp = await fetch(item.getAttribute("href"));
-              const source = await resp.text();
+      const titleTarget = DOM.querySelectorAll(
+        "rss > channel > item > title",
+      );
+      const dateTarget = DOM.querySelectorAll(
+        "rss > channel > item> pubDate",
+      );
+      const urlTarget = DOM.querySelectorAll(
+        "rss > channel > item> guid",
+      );
+      const descriptionTarget = DOM.querySelectorAll(
+        "rss > channel > item > description",
+      );
+      for (
+        let i = issouPageCount * (page - 1);
+        i < issouPageCount * page;
+        i++
+      ) {
+        const title = titleTarget[i].innerText;
+        const updated_at = dateTarget[i].innerText;
+        const url = urlTarget[i].innerText;
+        const description = descriptionTarget[i].innerText;
 
-              //HTMLソースを DOMオブジェクトに変換した物が入っている
-              const DOM = new DOMParser().parseFromString(
-                source,
-                "text/html",
-              );
-              const titleTarget = DOM.querySelectorAll("#chead > a > h2");
-              const urlTarget = DOM.querySelectorAll("#chead > a");
-              const dateTarget = DOM.querySelectorAll(
-                "#content > div.datetime",
-              );
-              const pre_descriptionTarget = DOM.querySelectorAll(
-                ".article",
-              );
-              let descriptionTarget = [];
-              for (let j = 1; j < pre_descriptionTarget.length; j++) {
-                descriptionTarget.push(pre_descriptionTarget[j]);
-              }
+        let likes_count;
+        let comments_count;
+        let username;
 
-              for (let i = 0; i < titleTarget.length; i++) {
-                let title = titleTarget[i].innerText;
-                let updated_at = dateTarget[i].innerText;
-                let url = new URL(
-                  urlTarget[i].getAttribute("href"),
-                  "https://fukuno.jig.jp/",
-                ).href;
-
-                //descriptionを取得
-                let description = descriptionTarget[i].innerText.trim()
-                  .replace(/\s+/g, " ").substring(0, 60);
-                //"<h1><img hogegege>hoge</h1>".replace(/<("[^"]*"|'[^']*'|[^'">])*>/g,'')
-                //description.innerHTML.replace(/<("[^"]*"|'[^']*'|[^'">])*>/g, "");
-                //console.log(description);
-
-                let likes_count;
-                let comments_count;
-                let username;
-
-                Results.push({
-                  title,
-                  updated_at,
-                  url,
-                  description,
-                  likes_count,
-                  comments_count,
-                  username,
-                });
-              }
-            }
-          },
-        );
-
-      console.log(Results);
+        Results.push({
+          title,
+          updated_at,
+          url,
+          description,
+          likes_count,
+          comments_count,
+          username,
+        });
+      }
 
       issouObj.push(...Results.map((item) => {
         return {
@@ -286,7 +225,6 @@ Deno.serve(async (req) => {
     obj.Issou = issouObj;
 
     console.log("show obj");
-    //console.log(obj);
     return new Response(JSON.stringify(obj), {
       headers: {
         "content-type": "application/json",
