@@ -1,5 +1,5 @@
 * {
-    box-sizing: border-box;
+    // box-sizing: border-box;
     margin: 0;
     padding: 0;
 }
@@ -14,58 +14,71 @@ img {
     height: auto;
 }
 
-a {
-    text-decoration: none;
-}
-
 i {
-    font-size: 3rem;
+    font-size: 1.7rem;
 }
 
-p {
-    font-size: 1.6rem;
-    padding: 10px;
+main {
+    background-image: url(./images/river.png);
+    background-repeat: no-repeat;
+    background-size: 100%;
+    overflow: hidden;
 }
 
-.container {
-    background: #efefef;
-    min-height: 100vh;
+#feed-container {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
 }
 
-.river {
-    max-width: 85%;
+.feed-item {
+    position: absolute;
+    width: 45%;
+    height: 30%;
+    // overflow: hidden;
+    // white-space: nowrap;
+    transform-origin: center;
     display: flex;
+    align-items: center;
     justify-content: center;
-    flex-direction: column;
-    margin: 0 auto;
 }
 
-.card {
+.article {
     background: #fff;
-    border-radius: 15px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 15px;
     margin-top: 20px;
+    transform-origin: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 
     .top {
-        margin: 20px 20px 0 20px;
+        display: flex;
+        flex-direction: column;
+        justify-content: left;
+
         .title {
-            font-size: 2rem;
-            font-weight: 800;
-            padding-bottom: 10px;
-            line-height: 2.5rem;
+            font-size: 1.3rem;
+            font-weight: 700;
+            padding-bottom: 7.5px;
         }
         .description {
-            font-size: 1.6rem;
+            font-size: 1rem;
             font-weight: 300;
         }
     }
 
     .bottom {
         display: flex;
-        flex-wrap: wrap;
         flex-direction: row;
         align-items: center;
         justify-content: space-between;
-        margin: 10px 20px 15px 20px;
+        flex-wrap: wrap;
+        // margin: 10px 20px 15px 20px;
 
         .info {
             display: flex;
@@ -84,7 +97,12 @@ p {
             }
         }
         .icon {
-            width: 10%;
+            width: 20%;
         }
     }
+}
+
+.counts {
+    font-size: 1.6rem;
+    padding: 0 .6rem 0 .6rem;
 }
