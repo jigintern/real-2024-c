@@ -155,6 +155,12 @@ main {
 #create-river-ok {
   visibility: hidden;
 }
+#create-river-cancel {
+  visibility: hidden;
+}
 #create-river-name {
   visibility: hidden;
+}
+#create-river-done {
+  visibility: none;
 }/*# sourceMappingURL=style.css.map */

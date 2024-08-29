@@ -89,7 +89,9 @@ function addNewContent(content, zIndex) {
     newContentElement.style.zIndex = zIndex;
     container.appendChild(newContentElement);
 
-    newContentElement.onclick
+    newContentElement.onclick = (event) => {
+        console.log("test");
+    };
 
     // 初期位置
     gsap.set(newContentElement, {
@@ -185,6 +187,14 @@ globalThis.onload = async () => {
             for (const articleLink of articleLinks) {
                 articleLink.style.pointerEvents = "none";
             }
+
+            const feedItems = document.querySelectorAll(".feed-item");
+            for (const feedItem of feedItems) {
+                feedItem.addEventListener('click', () => {
+                    
+                })
+            }
+
         } else {
             createRiver = false;
             const articleLinks = document.querySelectorAll(".article-link");
@@ -192,9 +202,6 @@ globalThis.onload = async () => {
                 articleLink.style.pointerEvents = "auto";
             }
         }
-        
-        // タップした記事を保存
-        savedArticles = [];
     });
 };
 

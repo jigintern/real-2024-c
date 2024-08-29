@@ -163,7 +163,13 @@ main {
     &-ok {
         visibility: hidden;
     }
+    &-cancel {
+        visibility: hidden;
+    }
     &-name {
         visibility: hidden;
+    }
+    &-done {
+        visibility: none;
     }
 }
