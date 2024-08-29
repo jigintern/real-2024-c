@@ -3,6 +3,7 @@ import { serveDir } from "https://deno.land/std@0.151.0/http/file_server.ts";
 import { DOMParser } from "https://deno.land/x/deno_dom/deno-dom-wasm.ts";
 
 //表示するページを変更するための変数
+const maxPage=8;
 let page = 0;
 const zennPageCount = 20;
 const issouPageCount = 20;
@@ -69,7 +70,7 @@ Deno.serve(async (req) => {
     });
   }
   if (req.method === "GET" && pathname === "/article") {
-    page = 1 + (page % 8);
+    page = 1 + (page % maxPage);
 
     //Qiitaから記事をとってくる
     if (qiita) {
@@ -183,9 +184,9 @@ Deno.serve(async (req) => {
         "rss > channel > item > description",
       );
       for (
-        let i = (issouPageCount * (page - 1)) % titleTarget / length;
-        i < (issouPageCount * page) % titleTarget / length;
-        i++
+        let i = (issouPageCount * (page - 1)) % titleTarget.length;
+        i < issouPageCount * page ;
+        i=(i+1)% titleTarget.length
       ) {
         const title = titleTarget[i].innerText;
         const updated_at = dateTarget[i].innerText;
