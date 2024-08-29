@@ -18,6 +18,11 @@ i {
     font-size: 1.7rem;
 }
 
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
 main {
     background-image: url(./images/river.png);
     background-repeat: no-repeat;
@@ -36,8 +41,6 @@ main {
     position: absolute;
     width: 45%;
     height: 30%;
-    // overflow: hidden;
-    // white-space: nowrap;
     transform-origin: center;
     display: flex;
     align-items: center;
@@ -49,7 +52,6 @@ main {
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     padding: 15px;
-    margin-top: 20px;
     transform-origin: center;
     display: flex;
     flex-direction: column;
