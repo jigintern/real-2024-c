@@ -157,7 +157,10 @@ background-color: white;
 padding: 32px;
 border-radius: 16px;
 width: 300px;
-text-align: center;
+display: flex;
+justify-content: center;
+align-items: center;
+flex-direction: column;
 }
 
 h2 {
@@ -168,13 +171,17 @@ margin-bottom: 16px;
 
 .search_container{
     box-sizing: border-box;
-    position: relative;
     border: 1px solid #999;
-    padding: 3px 10px;
     border-radius: 20px;
-    height: 2.3em;
-    width: 260px;
-    overflow: hidden;
+
+    height: 5rem;
+    width: 80%;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    margin-bottom: 20px;
 }
 .search_container input[type="text"]{
     border: none;
@@ -186,14 +193,12 @@ margin-bottom: 16px;
 .search_container input[type="submit"]{
     cursor: pointer;
     font-family: FontAwesome;
-    font-size: 1.3em;
+    font-size: 2em;
     border: none;
     background: none;
     color: #3879D9;
-    position: absolute;
-    width: 2.5em;
-    height: 2.5em;
-    right: 0;
+    width: 2.5rem;
+    height: 2.5rem;
     outline : none;
 }
 
@@ -203,7 +208,6 @@ margin-bottom: 16px;
     display: block;
     width: 48px; /* アイコンの幅 */
     height: 48px; /* アイコンの高さ */
-    margin-right: 8px;
     cursor: pointer; /* 画像がクリック可能であることを示すカーソル */
   }
 /* チェックボックスが画像の下に重なるように調整 */
@@ -223,9 +227,10 @@ label {
   input[type="checkbox"]:checked + .checkbox-icon {
     /* チェックボックスがチェックされている場合のスタイル */
     border-radius: 8px;
-    background-color: skyblue;
+    opacity: 1;
   }
 
 .checkbox-icon{
     margin-bottom: 16px;
+    opacity: 0.5;
 }
