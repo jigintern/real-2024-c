@@ -15,7 +15,7 @@ img {
 }
 
 i {
-    font-size: 3rem;
+    font-size: 1.7rem;
 }
 
 main {
@@ -48,7 +48,7 @@ main {
     background: #fff;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    padding: 16px;
+    padding: 15px;
     margin-top: 20px;
     transform-origin: center;
     display: flex;
@@ -57,15 +57,14 @@ main {
     align-items: center;
 
     .top {
-        margin: 20px 20px 0 20px;
+        // margin: 20px 20px 0 20px;
         .title {
-            font-size: 2rem;
-            font-weight: 800;
-            padding-bottom: 10px;
-            line-height: 2.5rem;
+            font-size: 1.3rem;
+            font-weight: 700;
+            padding-bottom: 7.5px;
         }
         .description {
-            font-size: 1.6rem;
+            font-size: 1rem;
             font-weight: 300;
         }
     }
@@ -95,12 +94,12 @@ main {
             }
         }
         .icon {
-            width: 10%;
+            width: 20%;
         }
     }
 }
 
 .counts {
     font-size: 1.6rem;
-    padding: 10px;
+    padding: 0 .6rem 0 .6rem;
 }

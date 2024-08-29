@@ -27,7 +27,7 @@ const genArticle = () => {
         return string.replace(/\n{1,}/g, ' ').replace(/#{1,}/g, ' ');
     }
 
-    const title = article.title;
+    const titleAll = article.title;
     const updatedAt = article.updated_at;
     const url = article.url;
     const description = article.description;
@@ -35,17 +35,18 @@ const genArticle = () => {
     const comments = article.comments_count === undefined ? 0: article.comments_count;
     const username = article.username;
 
+    const title = titleAll.substring(0, 30);
     // 返ってくる日付を変換 2024-04-03 -> 2024/04/03
     const date = updatedAt.substring(0,10).replace(/-/g, '/');
     // 説明文から \n を削除し、それを説明欄に記載
-    const summary = removeSyntax(description).substring(0, 75);
+    const summary = removeSyntax(description).substring(0, 40);
     // サイトごとの処理
     const siteType = getSiteType(url);
     const { from, icon } = siteInfo[siteType] || { icon: 'Unknown', icon: '' };
 
     card = `<div class="article">
           <div class="top">
-            <div class="title">${title}</div>
+            <div class="title">${title}&nbsp;...</div>
             <div class="description"><span id="upload-at">${date}</span> - ${summary}&nbsp;...</div>
           </div>
           <div class="bottom">
