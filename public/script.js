@@ -85,8 +85,27 @@ const getArticleHTMLElement = () => {
 };
 
 // 記事をリストに追加
-const saveArticle = (contentElement) => {
+const saveArticle = (element) => {
+    const title = element.getElementsByClassName("title")[0]
+    const updatedAt = element.getElementsByClassName("upload-at")[0];
+    const url = (element.getElementsByClassName("article-link"))[0].getAttribute("href");
+    const description = element.getElementsByClassName("description")[0];
+    const likesCount = element.getElementsByClassName("counts")[0];
+    const CommentsCount = element.getElementsByClassName("counts")[1];
 
+    const riverArticle = {
+        title: title.innerText,
+        updated_at: updatedAt.innerText,
+        url: url,
+        description: description.innerText,
+        likes_counts: Number(likesCount.innerText),
+        comments_count: Number(CommentsCount.innerText)
+    };
+
+    // 同じ川に2つ以上の記事を流せないように
+    if (riverArticles.filter((article) => article.title === riverArticle.title).length === 0) {
+        riverArticles.push(riverArticle);
+    }
 };
 
 // 作成した分流をサーバにへ
@@ -113,7 +132,6 @@ function addNewContent(content, zIndex) {
     container.appendChild(newContentElement);
 
     newContentElement.onclick = (event) => {
-
         const title = newContentElement.getElementsByClassName("title")[0]
         const updatedAt = newContentElement.getElementsByClassName("upload-at")[0];
         const url = (newContentElement.getElementsByClassName("article-link"))[0].getAttribute("href");
@@ -131,10 +149,10 @@ function addNewContent(content, zIndex) {
         };
 
         // 同じ川に2つ以上の記事を流せないように
-        if (riverArticles.includes(riverArticle) === false) {
+        if (riverArticles.filter((article) => article.title === riverArticle.title).length === 0) {
             riverArticles.push(riverArticle);
         }
-    };
+    };  
 
     // 初期位置
     gsap.set(newContentElement, {
@@ -221,12 +239,15 @@ globalThis.onload = async () => {
     // 分流作成に必要な要素
     const changeModeBtn = document.getElementById('create-river-btn');
     const chooseOkBtn = document.getElementById('create-river-ok');
+    const createDone = document.getElementById('create-river-done');
+    const createCancel = document.getElementById('create-river-cancel');
     
     // モードの切り替え
     changeModeBtn.addEventListener('click', () => {
+        // 川の作成モード
         if (createRiver === false) {
-            createRiver = true;
             console.log("Mode: Choose");
+            createRiver = true;
             
             const articleLinks = document.querySelectorAll(".article-link");
             for (const articleLink of articleLinks) {
@@ -236,13 +257,16 @@ globalThis.onload = async () => {
             const feedItems = document.querySelectorAll(".feed-item");
             for (const feedItem of feedItems) {
                 feedItem.addEventListener('click', () => {
-                    
+                    // リストに保存しておく
                 })
             }
+
+            chooseOkBtn.style.visibility = 'visible';
             
+        // 通常モード
         } else {
-            createRiver = false;
             console.log("Mode: See");
+            createRiver = false;
 
             const articleLinks = document.querySelectorAll(".article-link");
             for (const articleLink of articleLinks) {

@@ -152,9 +152,7 @@ main {
   }
 
 #create-river {
-
     &-btn {
-        // visibility: visible;
         position: fixed;
         top: 10px;
         left: 10px;
@@ -162,6 +160,10 @@ main {
     }
     &-ok {
         visibility: hidden;
+        position: fixed;
+        top: 60px;
+        left: 10px;
+        // padding: 10px 20px;
     }
     &-cancel {
         visibility: hidden;
