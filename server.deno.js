@@ -1,10 +1,6 @@
 import { serveDir } from "https://deno.land/std@0.151.0/http/file_server.ts";
 //スクレイピング用のライブラリ
 import { DOMParser } from "https://deno.land/x/deno_dom/deno-dom-wasm.ts";
-//ハッシュ値生成用ライブラリ
-import { generate } from "https://deno.land/std@0.224.0/uuid/v5.ts";
-
-const NAMESPACE_URL = "6ba7b811-9dad-11d1-80b4-00c04fd430c8";
 
 //表示するページを変更するための変数
 let page = 0;
@@ -18,7 +14,8 @@ Deno.serve(async (req) => {
   console.log(pathname);
 
   //データベースにアクセス
-  const kv = await Deno.openKv(Deno.env.get("DENO_KV_URL"));
+  //const kv = await Deno.openKv(Deno.env.get("DENO_KV_URL"));
+const kv =await Deno.openKv("https://api.deno.com/databases/f44159d6-9fbb-4475-b225-ec5ab1947c30/connect");
 
   //クエリパラメータを取得
   const param = new URL(req.url).searchParams;
@@ -26,6 +23,7 @@ Deno.serve(async (req) => {
   const zenn = param.get("zenn") === "0" ? false : true;
   const issou = param.get("issou") === "0" ? false : true;
   const keyWord = param.get("q") ||"";
+  const river_id=param.get("river_id");
 
   //レスポンス用のJSON変数
   let obj = { "Qiita": [], "Zenn": [], "Issou": [] };
@@ -58,7 +56,21 @@ Deno.serve(async (req) => {
     });
   }
   
+  if (req.method === "GET" && pathname === "/river"){
+    console.log("GET");
+    if(! river_id){
+      return Response.redirect("http://localhost:8000/article", 302);
+    }
 
+    const getResult = await kv.get(["river",river_id]);
+
+    //console.log(getResult);
+    const requestValue=getResult.value;
+    return Response.json({ 
+      requestValue
+    });
+
+  }
   if (req.method === "GET" && pathname === "/article") {
     page = 1 + (page % 100);
     //Qiitaから記事をとってくる
@@ -142,7 +154,7 @@ Deno.serve(async (req) => {
           description: "",
           likes_count: item.liked_count,
           comments_count: item.comments_count,
-          username: item.user.username,
+          username: item.user.id,//usernameだと設定していない人がいるため
         };
       }));
     }
