@@ -9,11 +9,18 @@ let riverArticles = [];
 
 // 記事を60個取得
 const getArticles = async (qiita, zenn, issou, str) => {
-  console.log(str);
-  const response = await fetch(`/article?qiita=${qiita}&zenn=${zenn}&issou=${issou}${(str !== "") ? `&q=${str}` : ""}`);
-  const resJson = await response.json();
-  const articlesAll = [...resJson.Qiita, ...resJson.Zenn, ...resJson.Issou];
-  return articlesAll;
+    const search = location.search;
+    if (search) {
+        const response = await fetch(`/river${search}`);
+        const resJson = await response.json();
+        const articlesAll = resJson.requestValue.articles;
+        return articlesAll;
+    } else {
+        const response = await fetch(`/article?qiita=${qiita}&zenn=${zenn}&issou=${issou}${(str !== "") ? `&q=${str}` : ""}`);
+        const resJson = await response.json();
+        const articlesAll = [...resJson.Qiita, ...resJson.Zenn, ...resJson.Issou];
+        return articlesAll;
+    }
 };
 
 // 記事の生成
