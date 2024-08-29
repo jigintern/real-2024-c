@@ -42,7 +42,7 @@ Deno.serve(async (req) => {
     const articles=requestJson.articles;
 
     //ハッシュ値生成
-    const uuid = await generate(NAMESPACE_URL, new TextEncoder().encode(river_name));
+    const uuid = self.crypto.randomUUID();
     const key=["river",uuid];
     const value={
       "river_name":river_name,
