@@ -124,11 +124,16 @@ function addNewContent(content, zIndex) {
     });
 };
 
+const shuffleArray = (array) => {
+    return array.slice().sort(() => Math.random() - Math.random());
+}
+
 globalThis.onload = async () => {
     const response = await fetch("/article?qiita=true&zenn=true&issou=true");
     const resJson = await response.json();
-    articles = [...resJson.Qiita, ...resJson.Zenn, ...resJson.Issou];
-    // ! 記事をシャッフル !
+    const articlesAll = [...resJson.Qiita, ...resJson.Zenn, ...resJson.Issou];
+    // 記事のシャッフル
+    articles = shuffleArray(articlesAll);
     addNewContent(genArticle(), 999);
 };
 
