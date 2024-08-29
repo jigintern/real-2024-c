@@ -37,8 +37,8 @@ main {
     width: 45%;
     height: 30%;
     // overflow: hidden;
+    // white-space: nowrap;
     transform-origin: center;
-    white-space: nowrap;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -52,6 +52,7 @@ main {
     margin-top: 20px;
     transform-origin: center;
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
 
@@ -74,7 +75,7 @@ main {
         flex-direction: row;
         align-items: center;
         justify-content: space-between;
-        // flex-wrap: wrap;
+        flex-wrap: wrap;
         // margin: 10px 20px 15px 20px;
 
         .info {
