@@ -1,5 +1,5 @@
+@charset "UTF-8";
 * {
-  box-sizing: border-box;
   margin: 0;
   padding: 0;
 }
@@ -14,73 +14,138 @@ img {
   height: auto;
 }
 
+i {
+  font-size: 1.7rem;
+}
+
 a {
   text-decoration: none;
+  color: inherit;
 }
 
-i {
-  font-size: 3rem;
+main {
+  background-image: url(./images/river.png);
+  background-repeat: no-repeat;
+  background-size: 100%;
+  overflow: hidden;
 }
 
-p {
-  font-size: 1.6rem;
-  padding: 10px;
+#feed-container {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
 }
 
-.container {
-  background: #efefef;
-  min-height: 100vh;
-}
-
-.river {
-  max-width: 85%;
+.feed-item {
+  position: absolute;
+  width: 45%;
+  height: 30%;
+  transform-origin: center;
   display: flex;
+  align-items: center;
   justify-content: center;
-  flex-direction: column;
-  margin: 0 auto;
 }
 
-.card {
+.article {
   background: #fff;
-  border-radius: 15px;
-  margin-top: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 15px;
+  transform-origin: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
-.card .top {
-  margin: 20px 20px 0 20px;
+.article .top {
+  display: flex;
+  flex-direction: column;
+  justify-content: left;
 }
-.card .top .title {
-  font-size: 2rem;
-  font-weight: 800;
-  padding-bottom: 10px;
-  line-height: 2.5rem;
+.article .top .title {
+  font-size: 1.3rem;
+  font-weight: 700;
+  padding-bottom: 7.5px;
 }
-.card .top .description {
-  font-size: 1.6rem;
+.article .top .description {
+  font-size: 1rem;
   font-weight: 300;
 }
-.card .bottom {
+.article .bottom {
   display: flex;
-  flex-wrap: wrap;
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-  margin: 10px 20px 15px 20px;
+  flex-wrap: wrap;
 }
-.card .bottom .info {
+.article .bottom .info {
   display: flex;
   flex-direction: row;
 }
-.card .bottom .info .likes {
+.article .bottom .info .likes {
   display: flex;
   flex-direction: row;
   align-items: center;
   margin-right: 25px;
 }
-.card .bottom .info .comments {
+.article .bottom .info .comments {
   display: flex;
   flex-direction: row;
   align-items: center;
 }
-.card .bottom .icon {
-  width: 10%;
+.article .bottom .icon {
+  width: 20%;
+}
+
+.counts {
+  font-size: 1.6rem;
+  padding: 0 0.6rem 0 0.6rem;
+}
+
+#openPopupBtn {
+  position: fixed;
+  top: 10px;
+  right: 10px;
+  padding: 10px 20px;
+}
+
+#popup-wrapper {
+  width: 100vw; /*画面に大きさを合わせる*/
+  height: 100vh;
+  position: fixed; /*ラッパーの左上隅を画面左上に固定*/
+  top: 0px;
+  left: 0px;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  z-index: 2000;
+}
+
+#popup-background {
+  position: fixed;
+  width: 100%; /*ラッパー全体を覆うようにする*/
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /*半透明の黒*/
+  z-index: 1999;
+}
+
+.is-hidden {
+  visibility: hidden;
+}
+
+#popup {
+  z-index: 2000;
+}
+
+.popup-content {
+  background-color: white;
+  padding: 20px;
+  border-radius: 5px;
+  width: 300px;
+  text-align: center;
+}
+
+h2 {
+  margin-top: 0;
 }/*# sourceMappingURL=style.css.map */
