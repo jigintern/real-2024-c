@@ -158,18 +158,20 @@ globalThis.onload = async () => {
         const searchInputValue = document.getElementById('searchInput').value;
 
         // チェックボックスの状態を取得
-        const checkbox1 = document.getElementById('checkbox1').checked;
-        const checkbox2 = document.getElementById('checkbox2').checked;
-        const checkbox3 = document.getElementById('checkbox3').checked;
+        const qiitaIcon = document.getElementById('qiita-icon').checked;
+        const zennIcon = document.getElementById('zenn-icon').checked;
+        const issouIcon = document.getElementById('issou-icon').checked;
 
         // データをコンソールに表示
         console.log("検索ワード:", searchInputValue);
-        console.log("オプション1:", checkbox1);
-        console.log("オプション2:", checkbox2);
-        console.log("オプション3:", checkbox3);
+        console.log("オプション1:", qiitaIcon);
+        console.log("オプション2:", zennIcon);
+        console.log("オプション3:", issouIcon);
 
         const x = document.getElementById("popup-wrapper");
         x.classList.add("is-hidden");
+
+        articles.splice(1)
     });
 
     popupBackground.addEventListener('click', () => {
@@ -177,28 +179,28 @@ globalThis.onload = async () => {
       x.classList.add("is-hidden");
     });
 
-    const qiita = 1;
-    const zenn = 1;
-    const issou = 1;
-
     // 記事のシャッフル
-    articles = shuffleArray(await getArticles(qiita, zenn, issou));
+    articles = shuffleArray(await getArticles(1, 1, 1));
     addNewContent(getArticleHTMLElement(), 999);
 };
 
 
 let zIndex = 998;
-// 3秒ごとに新しいコンテンツを追加
+// 7秒ごとに新しいコンテンツを追加
 setInterval( async () => {
     addNewContent(getArticleHTMLElement(), zIndex);
     zIndex -= 1;
     
     // 記事が無くなった場合の再アクセス
     if (articles.length <= 5) {
-        let qiita = 1;
-        let zenn = 1;
-        let issou = 1;
+      const qiitaIcon = document.getElementById('qiita-icon').checked;
+      const zennIcon = document.getElementById('zenn-icon').checked;
+      const issouIcon = document.getElementById('issou-icon').checked;
+      
+      const qiita = (qiitaIcon == true)? 1 : 0;
+      const zenn = (zennIcon == true)? 1 : 0;
+      const issou = (issouIcon == true)? 1 : 0;
 
-        articles.unshift(...shuffleArray(await getArticles(qiita, zenn, issou)));
+      articles.unshift(...shuffleArray(await getArticles(qiita, zenn, issou)));
     }
 }, 7000);
