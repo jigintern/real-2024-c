@@ -44,25 +44,27 @@ const genArticle = () => {
     const siteType = getSiteType(url);
     const { from, icon } = siteInfo[siteType] || { icon: 'Unknown', icon: '' };
 
-    card = `<div class="article">
-          <div class="top">
-            <div class="title">${title}&nbsp;...</div>
-            <div class="description"><span id="upload-at">${date}</span> - ${summary}&nbsp;...</div>
-          </div>
-          <div class="bottom">
-            <div class="info">
-              <div class="likes">
-                <i class='bx bxs-heart'></i>
-                <p class="counts">${likes}</p>
-              </div>
-              <div class="comments">
+    card = `<a href="${url}" target="_blank">
+            <div class="article">
+            <div class="top">
+                <div class="title">${title}&nbsp;...</div>
+                <div class="description"><span id="upload-at">${date}</span> - ${summary}&nbsp;...</div>
+            </div>
+            <div class="bottom">
+                <div class="info">
+                    <div class="likes">
+                        <i class='bx bxs-heart'></i>
+                        <p class="counts">${likes}</p>
+                    </div>
+                <div class="comments">
                 <i class='bx bxs-conversation'></i>
-                <p class="counts">${comments}</p>
+                    <p class="counts">${comments}</p>
               </div>
             </div>
             <div class="icon"><img src="${icon}" alt="${from}のアイコン"></div>
-          </div>
-         </div>
+            </div>
+            </div>
+            </a>
             `;
     return card;
 };
@@ -124,11 +126,16 @@ function addNewContent(content, zIndex) {
     });
 };
 
+const shuffleArray = (array) => {
+    return array.slice().sort(() => Math.random() - Math.random());
+}
+
 globalThis.onload = async () => {
     const response = await fetch("/article?qiita=true&zenn=true&issou=true");
     const resJson = await response.json();
-    articles = [...resJson.Qiita, ...resJson.Zenn, ...resJson.Issou];
-    // ! 記事をシャッフル !
+    const articlesAll = [...resJson.Qiita, ...resJson.Zenn, ...resJson.Issou];
+    // 記事のシャッフル
+    articles = shuffleArray(articlesAll);
     addNewContent(genArticle(), 999);
 };
 
