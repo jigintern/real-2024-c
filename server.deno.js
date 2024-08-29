@@ -10,7 +10,7 @@ const NAMESPACE_URL = "6ba7b811-9dad-11d1-80b4-00c04fd430c8";
 let page = 0;
 //let keyWord="3D";
 const zennPageCount=20;
-const issouPageCount=20;
+const issouPageCount=5;
 let flag=true
 
 Deno.serve(async (req) => {

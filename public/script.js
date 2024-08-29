@@ -1,8 +1,16 @@
 // 記事一覧
 let articles = [];
 
+// 記事を60個取得
+const getArticles = async (qiita, zenn, issou) => {
+    const response = await fetch(`/article?qiita=${qiita}&zenn=${zenn}&issou=${issou}`);
+    const resJson = await response.json();
+    const articlesAll = [...resJson.Qiita, ...resJson.Zenn, ...resJson.Issou];
+    return articlesAll;
+};
+
 // 記事の生成
-const genArticle = () => {
+const getArticleHTMLElement = () => {
     const article = articles.pop();
 
     // サイトごとの情報
@@ -45,25 +53,25 @@ const genArticle = () => {
     const { from, icon } = siteInfo[siteType] || { icon: 'Unknown', icon: '' };
 
     card = `<a href="${url}" target="_blank">
-            <div class="article">
-            <div class="top">
-                <div class="title">${title}&nbsp;...</div>
-                <div class="description"><span id="upload-at">${date}</span> - ${summary}&nbsp;...</div>
-            </div>
-            <div class="bottom">
-                <div class="info">
-                    <div class="likes">
-                        <i class='bx bxs-heart'></i>
-                        <p class="counts">${likes}</p>
+                <div class="article">
+                    <div class="top">
+                        <div class="title">${title}&nbsp;...</div>
+                        <div class="description"><span id="upload-at">${date}</span> - ${summary}&nbsp;...</div>
                     </div>
-                <div class="comments">
-                <i class='bx bxs-conversation'></i>
-                    <p class="counts">${comments}</p>
-              </div>
-            </div>
-            <div class="icon"><img src="${icon}" alt="${from}のアイコン"></div>
-            </div>
-            </div>
+                    <div class="bottom">
+                        <div class="info">
+                            <div class="likes">
+                                <i class='bx bxs-heart'></i>
+                                <p class="counts">${likes}</p>
+                            </div>
+                            <div class="comments">
+                                <i class='bx bxs-conversation'></i>
+                                <p class="counts">${comments}</p>
+                            </div>
+                        </div>
+                        <div class="icon"><img src="${icon}" alt="${from}のアイコン"></div>
+                    </div>
+                </div>
             </a>
             `;
     return card;
@@ -76,10 +84,9 @@ function addNewContent(content, zIndex) {
     newContentElement.classList.add(zIndex);
     newContentElement.innerHTML = content;
     newContentElement.style.zIndex = zIndex;
+    container.appendChild(newContentElement);
 
-    container.appendChild(newContentElement); // 末尾に div 追加
-
-    // 初期位置の設定
+    // 初期位置
     gsap.set(newContentElement, {
         scale: 0.3,
         top: '4%',
@@ -126,22 +133,34 @@ function addNewContent(content, zIndex) {
     });
 };
 
+// 配列をシャッフル
 const shuffleArray = (array) => {
     return array.slice().sort(() => Math.random() - Math.random());
 }
 
+// ページが読み込まれたとき
 globalThis.onload = async () => {
-    const response = await fetch("/article?qiita=true&zenn=true&issou=true");
-    const resJson = await response.json();
-    const articlesAll = [...resJson.Qiita, ...resJson.Zenn, ...resJson.Issou];
+    const qiita = 1;
+    const zenn = 1;
+    const issou = 1;
+
     // 記事のシャッフル
-    articles = shuffleArray(articlesAll);
-    addNewContent(genArticle(), 999);
+    articles = shuffleArray(await getArticles(qiita, zenn, issou));
+    addNewContent(getArticleHTMLElement(), 999);
 };
 
 let zIndex = 998;
 // 3秒ごとに新しいコンテンツを追加
-setInterval(() => {
-    addNewContent(genArticle(), zIndex);
+setInterval( async () => {
+    addNewContent(getArticleHTMLElement(), zIndex);
     zIndex -= 1;
+    
+    // 記事が無くなった場合の再アクセス
+    if (articles.length <= 5) {
+        let qiita = 1;
+        let zenn = 1;
+        let issou = 1;
+
+        articles.unshift(...shuffleArray(await getArticles(qiita, zenn, issou)));
+    }
 }, 7000);
