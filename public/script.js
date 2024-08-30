@@ -292,7 +292,7 @@ globalThis.onload = async () => {
 };
 
 let zIndex = 998;
-// 7秒ごとに新しいコンテンツを追加
+// 6秒ごとに新しいコンテンツを追加
 setInterval(async () => {
   const card = getArticleHTMLElement();
   if (card !== undefined) {
@@ -313,4 +313,4 @@ setInterval(async () => {
 
     articles.unshift(...shuffleArray(await getArticles(qiita, zenn, issou, searchInputValue)));
   }
-}, 7000);
+}, 6000);
