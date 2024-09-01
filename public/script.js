@@ -243,7 +243,7 @@ globalThis.onload = async () => {
     const createCancel = document.getElementById('create-river-cancel');
 
     // モードの切り替え
-    changeModeBtn.addEventListener('click', () => {
+    changeModeBtn.onclick = () => {
         // 川の作成モード
         if (createRiver === false) {
             console.log("Mode: Choose");
@@ -256,31 +256,31 @@ globalThis.onload = async () => {
             
             const feedItems = document.querySelectorAll(".feed-item");
             for (const feedItem of feedItems) {
-                feedItem.addEventListener('click', () => {
+                feedItem.onclick = () => {
                     // リストに保存しておく
                     saveArticle(feedItem);
-                })
+                };
             }
 
             // リストの確定
             chooseOkBtn.style.visibility = 'visible';
-            chooseOkBtn.addEventListener('click', async () => {
+            chooseOkBtn.onclick = async () => {
                 createRiver = false;
                 const url = await riverId("", riverArticles);
                 prompt("共有URL", url);
                 chooseOkBtn.style.visibility = 'hidden';
                 createCancel.style.visibility = 'hidden';
-            })
+            };
 
 
             // キャンセル
             createCancel.style.visibility = 'visible';
-            createCancel.addEventListener('click', () => {
+            createCancel.onclick = () => {
                 createRiver = false;
                 articleLinks.length = 0;
                 chooseOkBtn.style.visibility = 'hidden';
                 createCancel.style.visibility = 'hidden';
-            })
+            };
             
         // 通常モード
         } else {
@@ -294,7 +294,7 @@ globalThis.onload = async () => {
                 articleLink.style.pointerEvents = "auto";
             }
         }
-    });
+    };
 };
 
 let zIndex = 998;
