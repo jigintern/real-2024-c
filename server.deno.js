@@ -18,7 +18,7 @@ Deno.serve(async (req) => {
 
   //クエリパラメータを取得
   const param = new URL(req.url).searchParams;
-  const qiita = param.get("qiita") === "0" ? false : true;
+  const qiita = param.get("qiita") === "0" || !Deno.env.get("QIITA_API_TOKEN") ? false : true;
   const zenn = param.get("zenn") === "0" ? false : true;
   const issou = param.get("issou") === "0" ? false : true;
   const keyWord = param.get("q") || "";
