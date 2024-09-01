@@ -268,6 +268,8 @@ globalThis.onload = async () => {
                 createRiver = false;
                 const url = await riverId("", riverArticles);
                 prompt("共有URL", url);
+                chooseOkBtn.style.visibility = 'hidden';
+                createCancel.style.visibility = 'hidden';
             })
 
 
@@ -275,13 +277,17 @@ globalThis.onload = async () => {
             createCancel.style.visibility = 'visible';
             createCancel.addEventListener('click', () => {
                 createRiver = false;
-                articleLinks = [];
+                articleLinks.length = 0;
+                chooseOkBtn.style.visibility = 'hidden';
+                createCancel.style.visibility = 'hidden';
             })
             
         // 通常モード
         } else {
             console.log("Mode: See");
             createRiver = false;
+            chooseOkBtn.style.visibility = 'hidden';
+            createCancel.style.visibility = 'hidden';
 
             const articleLinks = document.querySelectorAll(".article-link");
             for (const articleLink of articleLinks) {
