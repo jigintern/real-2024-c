@@ -1,5 +1,8 @@
+// 最大の画面の width === 携帯で見たときの横幅
+$max-screen-size: 670px;
+
 * {
-    // box-sizing: border-box;
+    box-sizing: border-box;
     margin: 0;
     padding: 0;
 }
@@ -23,110 +26,67 @@ a {
     color: inherit;
 }
 
-main {
-    background-image: url(./images/river.png);
-    background-repeat: no-repeat;
-    background-size: 100%;
-    overflow: hidden;
-}
-
-#feed-container {
-    position: relative;
-    width: 100vw;
-    height: 100vh;
-    overflow: hidden;
-}
-
-.feed-item {
-    position: absolute;
-    width: 45%;
-    height: 30%;
-    transform-origin: center;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.article {
+#wrapper {
     background: #fff;
-    border-radius: 16px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    padding: 15px;
-    transform-origin: center;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+    max-height: 100vh;
 
-    .top {
-        display: flex;
-        flex-direction: column;
-        justify-content: left;
+    .contents {
+        max-width: $max-screen-size;
+        // position: relative;
+        background-image: url(./images/river.png);
+        background-size: cover;
+        background-position: top center;
+        margin: 0 auto;
 
-        .title {
-            font-size: 1.3rem;
-            font-weight: 700;
-            padding-bottom: 7.5px;
-        }
-        .description {
-            font-size: 1rem;
-            font-weight: 300;
-        }
-    }
-
-    .bottom {
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        justify-content: space-between;
-        flex-wrap: wrap;
-        // margin: 10px 20px 15px 20px;
-
-        .info {
+        .top-btn {
             display: flex;
-            flex-direction: row;
-            .likes {
-                display: flex;
-                flex-direction: row;
-                align-items: center;
-                margin-right: 25px;
-            }
-            .comments {
-                display: flex;
-                flex-direction: row;
-                align-items: center;
-            }
-        }
-        .icon {
-            width: 20%;
+            justify-content: space-between;
+            z-index: 2;
         }
     }
 }
 
-.counts {
-    font-size: 1.6rem;
-    padding: 0 .6rem 0 .6rem;
+#create-river {
+    &-btn {
+        position: absolute;
+        border: none;
+        top: 10px;
+        left: 10px;
+        padding: 10px 20px;
+    }
+    &-ok {
+        position: absolute;
+        visibility: hidden;
+        border: none;
+        top: 60px;
+        left: 10px;
+        padding: 10px;
+    }
+    &-cancel {
+        position: absolute;
+        visibility: hidden;
+        border: none;
+    }
 }
 
-#openPopupBtn {
+#openPopup {
     position: fixed;
-    top: 3%;
-    right: -55%;
-    padding: 0;
-    border: none;
+    top: 2vw;
+    right: 7%;
+    padding: 10px 20px;
     background: transparent;
-    img.grandma {
-        width: 20%;
-        height: 20%;
+    border: none;
+
+    &-grandma {
+        width: 32vw;
+    }
+    &-oke {
+        position: fixed;
+        top: 20vw;
+        width: 15%;
+        right: 0;
     }
 }
-
-img.oke{
-    position: fixed;
-    top: 100px;
-    width: 15%;
-    right: 0%;
-  }
 
 #popup-wrapper {
 width: 100%; /*画面に大きさを合わせる*/
@@ -244,35 +204,82 @@ label {
     opacity: 0.5;
 }
 
-#create-river {
-    &-btn {
-        position: fixed;
-        top: 10px;
-        left: 10px;
-        padding: 10px 20px;
+// 
+// Card
+// 
+#feed-container {
+    position: relative;
+    height: 100vh;
+    overflow: hidden;
+}
+
+.feed-item {
+    position: absolute;
+    width: 45%;
+    height: 30%;
+    transform-origin: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.article {
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 15px;
+    transform-origin: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    .top {
+        display: flex;
+        flex-direction: column;
+        justify-content: left;
+
+        .title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            padding-bottom: 7.5px;
+        }
+        .description {
+            font-size: 1rem;
+            font-weight: 300;
+        }
     }
-    &-ok {
-        visibility: hidden;
-        position: fixed;
-        top: 60px;
-        left: 10px;
-        padding: 10px;
+
+    .bottom {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        // margin: 10px 20px 15px 20px;
+
+        .info {
+            display: flex;
+            flex-direction: row;
+            .likes {
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                margin-right: 25px;
+            }
+            .comments {
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+            }
+        }
+        .icon {
+            width: 20%;
+        }
     }
-    &-name {
-        visibility: hidden;
-        position: fixed;
-        top: 120px;
-        left: 10px;
-        padding: 10px;
-    }
-    &-done {
-        visibility: none;
-        position: fixed;
-        top: 180px;
-        left: 10px;
-        padding: 10px;
-    }
-    &-cancel {
-        visibility: hidden;
-    }
+}
+
+.counts {
+    font-size: 1.6rem;
+    padding: 0 .6rem 0 .6rem;
 }

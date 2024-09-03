@@ -1,3 +1,6 @@
+// for writing gsap code
+gsap.registerPlugin(MotionPathPlugin);
+
 // 記事一覧
 let articles = [];
 
@@ -143,16 +146,16 @@ function addNewContent(content, zIndex) {
   newContentElement.style.zIndex = zIndex;
   container.appendChild(newContentElement);
 
-    newContentElement.onclick = (event) => {
-        saveArticle(newContentElement);
-    };  
+  newContentElement.onclick = (event) => {
+      saveArticle(newContentElement);
+  };  
 
-    // 初期位置
-    gsap.set(newContentElement, {
-        scale: 0.3,
-        top: '4%',
-        left: '25%',
-    });
+  // 初期位置
+  gsap.set(newContentElement, {
+      scale: 0.3,
+      top: '4%',
+      left: '25%',
+  });
 
   // アニメーションを開始
   gsap.to(newContentElement, {
@@ -161,7 +164,7 @@ function addNewContent(content, zIndex) {
       path: [
         { x: `0%`, y: '0%' },
         { x: `${Math.random() * 100 - 50}%`, y: '3%' },
-        { x: `${Math.random() * 1000 - 100}%`, y: '20%' },
+        { x: `${Math.random() * 100 - 100}%`, y: '20%' },
         { x: `${Math.random() * 200 - 100}%`, y: '30%' },
         { x: `${Math.random() * 200 - 100}%`, y: '50%' },
       ],
@@ -204,9 +207,9 @@ globalThis.onload = async () => {
 
   // ポップアップの要素を取得
   const popupBackground = document.getElementById('popup-background');
-  const openPopupBtn = document.getElementById('openPopupBtn');
+  const openPopupBtn = document.getElementById('openPopup');
   const sendBtn = document.getElementById('sendBtn');
-  const grandmaImage = document.querySelector('img.grandma');
+  const grandmaImage = document.getElementById('openPopup-grandma');
 
   // ポップアップを開く
   openPopupBtn.addEventListener('click', () => {

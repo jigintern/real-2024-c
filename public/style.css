@@ -1,5 +1,6 @@
 @charset "UTF-8";
 * {
+  box-sizing: border-box;
   margin: 0;
   padding: 0;
 }
@@ -23,104 +24,66 @@ a {
   color: inherit;
 }
 
-main {
-  background-image: url(./images/river.png);
-  background-repeat: no-repeat;
-  background-size: 100%;
-  overflow: hidden;
-}
-
-#feed-container {
-  position: relative;
-  width: 100vw;
-  height: 100vh;
-  overflow: hidden;
-}
-
-.feed-item {
-  position: absolute;
-  width: 45%;
-  height: 30%;
-  transform-origin: center;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.article {
+#wrapper {
   background: #fff;
-  border-radius: 16px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  padding: 15px;
-  transform-origin: center;
+  max-height: 100vh;
+}
+#wrapper .contents {
+  max-width: 670px;
+  position: relative;
+  background-image: url(./images/river.png);
+  background-size: cover;
+  background-position: top center;
+  margin: 0 auto;
+}
+#wrapper .contents .top-btn {
   display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}
-.article .top {
-  display: flex;
-  flex-direction: column;
-  justify-content: left;
-}
-.article .top .title {
-  font-size: 1.3rem;
-  font-weight: 700;
-  padding-bottom: 7.5px;
-}
-.article .top .description {
-  font-size: 1rem;
-  font-weight: 300;
-}
-.article .bottom {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
   justify-content: space-between;
-  flex-wrap: wrap;
-}
-.article .bottom .info {
-  display: flex;
-  flex-direction: row;
-}
-.article .bottom .info .likes {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  margin-right: 25px;
-}
-.article .bottom .info .comments {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-}
-.article .bottom .icon {
-  width: 20%;
+  z-index: 2;
 }
 
-.counts {
-  font-size: 1.6rem;
-  padding: 0 0.6rem 0 0.6rem;
-}
-
-#openPopupBtn {
-  position: fixed;
-  top: 3%;
-  right: -55%;
-  padding: 0;
+#create-river-btn {
+  position: absolute;
   border: none;
-  background: transparent;
+  top: 10px;
+  left: 10px;
+  padding: 10px 20px;
 }
-#openPopupBtn img.grandma {
-  width: 20%;
-  height: 20%;
+#create-river-ok {
+  position: absolute;
+  visibility: hidden;
+  border: none;
+  top: 60px;
+  left: 10px;
+  padding: 10px;
+}
+#create-river-cancel {
+  position: absolute;
+  visibility: hidden;
+  border: none;
 }
 
-img.oke {
-  position: fixed;
+#openPopup {
+  position: absolute;
+  background: transparent;
+  border: none;
+  top: 10px;
+  right: 10px;
+  padding: 10px 20px;
+}
+@media (min-width: 536px) {
+  #openPopup {
+    width: 20%;
+  }
+}
+@media (min-width: 670px) {
+  #openPopup {
+    width: 30%;
+  }
+}
+#openPopup-oke {
   top: 100px;
-  width: 15%;
-  right: 0%;
+  right: 0;
 }
 
 #popup-wrapper {
@@ -241,33 +204,74 @@ input[type=checkbox]:checked + .checkbox-icon {
   opacity: 0.5;
 }
 
-#create-river-btn {
-  position: fixed;
-  top: 10px;
-  left: 10px;
-  padding: 10px 20px;
+#feed-container {
+  position: relative;
+  height: 100vh;
+  overflow: hidden;
 }
-#create-river-ok {
-  visibility: hidden;
-  position: fixed;
-  top: 60px;
-  left: 10px;
-  padding: 10px;
+
+.feed-item {
+  position: absolute;
+  width: 45%;
+  height: 30%;
+  transform-origin: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
-#create-river-name {
-  visibility: hidden;
-  position: fixed;
-  top: 120px;
-  left: 10px;
-  padding: 10px;
+
+.article {
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 15px;
+  transform-origin: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
-#create-river-done {
-  visibility: none;
-  position: fixed;
-  top: 180px;
-  left: 10px;
-  padding: 10px;
+.article .top {
+  display: flex;
+  flex-direction: column;
+  justify-content: left;
 }
-#create-river-cancel {
-  visibility: hidden;
+.article .top .title {
+  font-size: 1.3rem;
+  font-weight: 700;
+  padding-bottom: 7.5px;
+}
+.article .top .description {
+  font-size: 1rem;
+  font-weight: 300;
+}
+.article .bottom {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+.article .bottom .info {
+  display: flex;
+  flex-direction: row;
+}
+.article .bottom .info .likes {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-right: 25px;
+}
+.article .bottom .info .comments {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+.article .bottom .icon {
+  width: 20%;
+}
+
+.counts {
+  font-size: 1.6rem;
+  padding: 0 0.6rem 0 0.6rem;
 }/*# sourceMappingURL=style.css.map */

@@ -7,54 +7,79 @@
     <title>技術書どんぶらこ | ホーム</title>
     <link rel="stylesheet" href="style.css">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
-    <script src="./script.js"></script>
     <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.5/MotionPathPlugin.min.js"></script>
+    <script src="./script.js"></script>
   </head>
   <body>
     <main>
-      <div id="feed-container"></div>
-      
-      <img src="./images/oke.png" class="oke">
-      <button id="openPopupBtn"><img src="./images/grandma_wash.png" class="grandma"></button>
+      <!-- the Entire Screen -->
+      <div id="wrapper">
+        
+        <!-- River Screen -->
+        <div class="contents">
 
-      <div id="popup-wrapper" class="is-hidden">
-        <div id="popup-background"></div>
-          <!-- ポップアップ -->
-        <div id="popup" class="popup">
-          <div class="popup-content">
-            <h2>おばあちゃんに聞く</h2>
-            <!-- 単語検索窓 -->
-            <div class="search_container">
-              <input type="text" id="searchInput" size="25" placeholder="キーワード検索">
-              <!-- 閉じるボタン -->
-              <input type="submit" id="sendBtn" value="&#xf002">
+          <!-- Card -->
+          <div id="feed-container"></div>
+          <!-- Card End -->
+
+          <div class="top-btn">
+            <!-- create River -->
+            <div id="create-river">
+              <button id="create-river-btn">川</button>
+              <button type="submit" id="create-river-ok">選択した記事を確定</button>
+              <button type="button" id="create-river-cancel">記事の選択をキャンセル</button>
             </div>
+            <!-- create River End -->
 
-            <!-- チェックボックス -->
-            <div class="checkbox-list">
-              <label>
-                <input type="checkbox" id="qiita-icon" checked>
-                <img src="./images/qiita.png" alt="Qiita" class="checkbox-icon">
-              </label>
-              <label>
-                <input type="checkbox" id="zenn-icon" checked>
-                <img src="./images/zenn-logo-only.svg" alt="Zenn" class="checkbox-icon">
-              </label>
-              <label>
-                <input type="checkbox" id="issou-icon" checked>
-                <img src="./images/fukuno-ichigojam-glass.jpg" alt="Issou" class="checkbox-icon">
-              </label>
-              <br>
+            <!-- open Popup -->
+            <button id="openPopup">
+              <img src="./images/grandma_wash.png" id="openPopup-grandma">
+              <img src="./images/oke.png" id="openPopup-oke">
+            </button>
+            <!-- open Popup End -->
+          </div>
+
+          <!-- Popup -->
+          <div id="popup-wrapper" class="is-hidden">
+            <div id="popup-background"></div>
+              <!-- ポップアップ -->
+            <div id="popup" class="popup">
+              <div class="popup-content">
+                <h2>おばあちゃんに聞く</h2>
+                <!-- 単語検索窓 -->
+                <div class="search_container">
+                  <input type="text" id="searchInput" size="25" placeholder="キーワード検索">
+                  <!-- 閉じるボタン -->
+                  <input type="submit" id="sendBtn" value="&#xf002">
+                </div>
+    
+                <!-- チェックボックス -->
+                <div class="checkbox-list">
+                  <label>
+                    <input type="checkbox" id="qiita-icon" checked>
+                    <img src="./images/qiita.png" alt="Qiita" class="checkbox-icon">
+                  </label>
+                  <label>
+                    <input type="checkbox" id="zenn-icon" checked>
+                    <img src="./images/zenn-logo-only.svg" alt="Zenn" class="checkbox-icon">
+                  </label>
+                  <label>
+                    <input type="checkbox" id="issou-icon" checked>
+                    <img src="./images/fukuno-ichigojam-glass.jpg" alt="Issou" class="checkbox-icon">
+                  </label>
+                  <br>
+                </div>
+              </div>
             </div>
           </div>
+
+
         </div>
-    </div>
-      <div id="create-river">
-        <button id="create-river-btn">川</button>
-        <button type="submit" id="create-river-ok">選択した記事を確定する</button>
-        <button type="button" id="create-river-cancel"></button>
+        <!-- River Screen End -->
       </div>
+      <!-- the Entire Screen End -->
     </main>
     <footer></footer>
   </body>
