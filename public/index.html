@@ -24,22 +24,21 @@
           <div id="feed-container"></div>
           <!-- Card End -->
 
-          <div class="top-btn">
-            <!-- create River -->
-            <div id="create-river">
-              <button id="create-river-btn">川</button>
-              <button type="submit" id="create-river-ok">選択した記事を確定</button>
-              <button type="button" id="create-river-cancel">記事の選択をキャンセル</button>
-            </div>
-            <!-- create River End -->
-
-            <!-- open Popup -->
-            <button id="openPopup">
-              <img src="./images/grandma_wash.png" id="openPopup-grandma">
-              <img src="./images/oke.png" id="openPopup-oke">
-            </button>
-            <!-- open Popup End -->
+          <!-- create River -->
+          <div id="create-river">
+            <button id="create-river-btn">川</button>
+            <button type="submit" id="create-river-ok">選択した記事を確定</button>
+            <button type="button" id="create-river-cancel">記事の選択をキャンセル</button>
           </div>
+          <!-- create River End -->
+
+          <!-- open Popup -->
+          <button id="openPopup">
+            <img src="./images/grandma_wash.png" id="openPopup-grandma">
+            <img src="./images/oke.png" id="openPopup-oke">
+          </button>
+          <!-- open Popup End -->
+
 
           <!-- Popup -->
           <div id="popup-wrapper" class="is-hidden">
@@ -49,8 +48,8 @@
               <div class="popup-content">
                 <h2>おばあちゃんに聞く</h2>
                 <!-- 単語検索窓 -->
-                <div class="search_container">
-                  <input type="text" id="searchInput" size="25" placeholder="キーワード検索">
+                <div class="search">
+                  <input type="text" id="search-input" size="25" placeholder="キーワード検索">
                   <!-- 閉じるボタン -->
                   <input type="submit" id="sendBtn" value="&#xf002">
                 </div>

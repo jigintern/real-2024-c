@@ -36,11 +36,6 @@ a {
   background-position: top center;
   margin: 0 auto;
 }
-#wrapper .contents .top-btn {
-  display: flex;
-  justify-content: space-between;
-  z-index: 2;
-}
 
 #create-river-btn {
   position: absolute;
@@ -61,29 +56,45 @@ a {
   position: absolute;
   visibility: hidden;
   border: none;
+  bottom: 10px;
+  left: 10px;
+  padding: 10px;
 }
 
 #openPopup {
   position: absolute;
+  top: 2vw;
+  right: 7%;
+  padding: 10px 20px;
   background: transparent;
   border: none;
-  top: 10px;
-  right: 10px;
-  padding: 10px 20px;
 }
-@media (min-width: 536px) {
-  #openPopup {
-    width: 20%;
+@media (max-width: 670px) {
+  #openPopup-grandma {
+    width: 32vw;
   }
 }
 @media (min-width: 670px) {
-  #openPopup {
-    width: 30%;
+  #openPopup-grandma {
+    width: 214.4px;
   }
 }
 #openPopup-oke {
-  top: 100px;
+  position: absolute;
   right: 0;
+}
+@media (max-width: 670px) {
+  #openPopup-oke {
+    top: 20vw;
+    right: 0;
+    width: 16vw;
+  }
+}
+@media (min-width: 670px) {
+  #openPopup-oke {
+    top: 134px;
+    width: 107.2px;
+  }
 }
 
 #popup-wrapper {
@@ -134,8 +145,7 @@ h2 {
   margin-bottom: 8px;
 }
 
-.search_container {
-  box-sizing: border-box;
+.search {
   border: 1px solid #999;
   border-radius: 20px;
   background-color: #fff;
@@ -147,18 +157,15 @@ h2 {
   padding: 7px;
   margin-bottom: 5px;
 }
-
-.search_container input[type=text] {
+.search input[type=text] {
   border: none;
   height: 2em;
   width: 48%;
 }
-
-.search_container input[type=text]:focus {
+.search input[type=text]:focus {
   outline: 0;
 }
-
-.search_container input[type=submit] {
+.search input[type=submit] {
   cursor: pointer;
   font-family: FontAwesome;
   font-size: 2em;
