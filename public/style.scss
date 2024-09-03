@@ -1,5 +1,8 @@
+// 最大の画面の width === 携帯で見たときの横幅
+$max-screen-size: 670px;
+
 * {
-    // box-sizing: border-box;
+    box-sizing: border-box;
     margin: 0;
     padding: 0;
 }
@@ -23,16 +26,199 @@ a {
     color: inherit;
 }
 
-main {
-    background-image: url(./images/river.png);
-    background-repeat: no-repeat;
-    background-size: 100%;
-    overflow: hidden;
+#wrapper {
+    background: #fff;
+    max-height: 100vh;
+
+    .contents {
+        max-width: $max-screen-size;
+        position: relative;
+        background-image: url(./images/river.png);
+        background-size: cover;
+        background-position: top center;
+        margin: 0 auto;
+    }
 }
 
+#create-river {
+    &-btn {
+        position: absolute;
+        border: none;
+        top: 10px;
+        left: 10px;
+        padding: 10px 20px;
+    }
+    &-ok {
+        position: absolute;
+        visibility: hidden;
+        border: none;
+        top: 60px;
+        left: 10px;
+        padding: 10px;
+    }
+    &-cancel {
+        position: absolute;
+        visibility: hidden;
+        border: none;
+        bottom: 10px;
+        left: 10px;
+        padding: 10px;
+    }
+}
+
+#openPopup {
+    position: absolute;
+    top: 2vw;
+    right: 7%;
+    padding: 10px 20px;
+    background: transparent;
+    border: none;
+
+    &-grandma {
+        @media (max-width: $max-screen-size) {
+            width: 32vw;
+        }
+        @media (min-width: $max-screen-size) {
+            width: calc($max-screen-size * 0.32);
+        }
+    }
+    &-oke {
+        position: absolute;
+        right: 0;
+        @media (max-width: $max-screen-size) {
+            top: 20vw;
+            right: 0;
+            width: 16vw;
+        }
+        @media (min-width: $max-screen-size) {
+            top: calc($max-screen-size * 0.2);
+            width: calc($max-screen-size * 0.16);
+        }
+    }
+}
+
+#popup-wrapper {
+    width: 100%; /*画面に大きさを合わせる*/
+    height: 100%;
+    position: fixed; /*ラッパーの左上隅を画面左上に固定*/
+    top: 0px;
+    left: 0px;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    z-index: 2000;
+}
+
+#popup-background{
+    position: fixed;
+    width: 100%; /*ラッパー全体を覆うようにする*/
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /*半透明の黒*/
+    z-index: 1999;
+}
+
+.is-hidden{
+    visibility: hidden;
+}
+
+#popup {
+    z-index: 2000;
+    margin: auto 64px;
+}
+
+.popup-content {
+    background-image: url(./images/peach.png);
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    padding: 32px;
+    border-radius: 16px;
+    width: 300px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+h2 {
+    margin-top: 15px;
+    margin-bottom: 8px;
+}
+
+.search{
+    border: 1px solid #999;
+    border-radius: 20px;
+    background-color: #fff;
+    height: 5rem;
+    width: 70%;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 7px;
+    margin-bottom: 5px;
+
+    input[type="text"] {
+        border: none;
+        height: 2em;
+        width: 48%;
+    }
+
+    input[type="text"]:focus {
+        outline: 0;
+    }
+
+    input[type="submit"] {
+        cursor: pointer;
+        font-family: FontAwesome;
+        font-size: 2em;
+        border: none;
+        background: none;
+        color: #3879D9;
+        width: 2rem;
+        height: 2rem;
+        outline : none;
+    }
+}
+
+/* チェックボックスを非表示にする */
+.checkbox-icon {
+    padding: 8px;
+    display: block;
+    width: 48px; /* アイコンの幅 */
+    height: 48px; /* アイコンの高さ */
+    cursor: pointer; /* 画像がクリック可能であることを示すカーソル */
+  }
+/* チェックボックスが画像の下に重なるように調整 */
+label {
+    display: inline-block;
+    position: relative;
+  }
+  
+  /* チェックボックスを非表示にする */
+  input[type="checkbox"] {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer; /* チェックボックスもクリック可能であることを示すカーソル */
+  }
+  
+  /* チェック状態のスタイルを追加（必要に応じて） */
+  input[type="checkbox"]:checked + .checkbox-icon {
+    /* チェックボックスがチェックされている場合のスタイル */
+    border-radius: 8px;
+    opacity: 1;
+  }
+
+.checkbox-icon{
+    margin-bottom: 16px;
+    opacity: 0.5;
+}
+
+// 
+// Card
+// 
 #feed-container {
     position: relative;
-    width: 100vw;
     height: 100vh;
     overflow: hidden;
 }
@@ -106,173 +292,4 @@ main {
 .counts {
     font-size: 1.6rem;
     padding: 0 .6rem 0 .6rem;
-}
-
-#openPopupBtn {
-    position: fixed;
-    top: 3%;
-    right: -55%;
-    padding: 0;
-    border: none;
-    background: transparent;
-    img.grandma {
-        width: 20%;
-        height: 20%;
-    }
-}
-
-img.oke{
-    position: fixed;
-    top: 100px;
-    width: 15%;
-    right: 0%;
-  }
-
-#popup-wrapper {
-width: 100%; /*画面に大きさを合わせる*/
-height: 100%;
-position: fixed; /*ラッパーの左上隅を画面左上に固定*/
-top: 0px;
-left: 0px;
-justify-content: center;
-align-items: center;
-display: flex;
-z-index: 2000;
-}
-
-#popup-background{
-position: fixed;
-width: 100%; /*ラッパー全体を覆うようにする*/
-height: 100%;
-background-color: rgba(0, 0, 0, 0.5); /*半透明の黒*/
-z-index: 1999;
-}
-
-.is-hidden{
-visibility: hidden;
-}
-
-#popup {
-z-index: 2000;
-margin: auto 64px;
-}
-
-.popup-content {
-background-image: url(./images/peach.png);
-background-size: contain;
-background-repeat: no-repeat;
-background-position: center;
-padding: 32px;
-border-radius: 16px;
-width: 300px;
-display: flex;
-justify-content: center;
-align-items: center;
-flex-direction: column;
-}
-
-h2 {
-margin-top: 15px;
-margin-bottom: 8px;
-}
-
-.search_container{
-    box-sizing: border-box;
-    border: 1px solid #999;
-    border-radius: 20px;
-    background-color: #fff;
-
-    height: 5rem;
-    width: 70%;
-
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 7px;
-    margin-bottom: 5px;
-}
-.search_container input[type="text"]{
-    border: none;
-    height: 2em;
-    width: 48%;
-}
-.search_container input[type="text"]:focus {
-    outline: 0;
-}
-.search_container input[type="submit"]{
-    cursor: pointer;
-    font-family: FontAwesome;
-    font-size: 2em;
-    border: none;
-    background: none;
-    color: #3879D9;
-    width: 2rem;
-    height: 2rem;
-    outline : none;
-}
-
-/* チェックボックスを非表示にする */
-.checkbox-icon {
-    padding: 8px;
-    display: block;
-    width: 48px; /* アイコンの幅 */
-    height: 48px; /* アイコンの高さ */
-    cursor: pointer; /* 画像がクリック可能であることを示すカーソル */
-  }
-/* チェックボックスが画像の下に重なるように調整 */
-label {
-    display: inline-block;
-    position: relative;
-  }
-  
-  /* チェックボックスを非表示にする */
-  input[type="checkbox"] {
-    position: absolute;
-    opacity: 0;
-    cursor: pointer; /* チェックボックスもクリック可能であることを示すカーソル */
-  }
-  
-  /* チェック状態のスタイルを追加（必要に応じて） */
-  input[type="checkbox"]:checked + .checkbox-icon {
-    /* チェックボックスがチェックされている場合のスタイル */
-    border-radius: 8px;
-    opacity: 1;
-  }
-
-.checkbox-icon{
-    margin-bottom: 16px;
-    opacity: 0.5;
-}
-
-#create-river {
-    &-btn {
-        position: fixed;
-        top: 10px;
-        left: 10px;
-        padding: 10px 20px;
-    }
-    &-ok {
-        visibility: hidden;
-        position: fixed;
-        top: 60px;
-        left: 10px;
-        padding: 10px;
-    }
-    &-name {
-        visibility: hidden;
-        position: fixed;
-        top: 120px;
-        left: 10px;
-        padding: 10px;
-    }
-    &-done {
-        visibility: none;
-        position: fixed;
-        top: 180px;
-        left: 10px;
-        padding: 10px;
-    }
-    &-cancel {
-        visibility: hidden;
-    }
 }

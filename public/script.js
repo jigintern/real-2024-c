@@ -1,3 +1,6 @@
+// for writing gsap code
+gsap.registerPlugin(MotionPathPlugin);
+
 // 記事一覧
 let articles = [];
 
@@ -143,16 +146,20 @@ function addNewContent(content, zIndex) {
   newContentElement.style.zIndex = zIndex;
   container.appendChild(newContentElement);
 
-    newContentElement.onclick = (event) => {
-        saveArticle(newContentElement);
-    };  
+  newContentElement.onclick = (event) => {
+      saveArticle(newContentElement);
+  };  
 
-    // 初期位置
-    gsap.set(newContentElement, {
-        scale: 0.3,
-        top: '4%',
-        left: '25%',
-    });
+  // 初期位置
+  gsap.set(newContentElement, {
+      scale: 0.3,
+      top: '4%',
+      left: '25%',
+  });
+
+  // 表示させる画面の幅を取得
+  const contents = document.querySelector('.contents');
+  const contentsWidth = contents.offsetWidth;
 
   // アニメーションを開始
   gsap.to(newContentElement, {
@@ -160,10 +167,10 @@ function addNewContent(content, zIndex) {
     motionPath: {
       path: [
         { x: `0%`, y: '0%' },
-        { x: `${Math.random() * 100 - 50}%`, y: '3%' },
-        { x: `${Math.random() * 1000 - 100}%`, y: '20%' },
-        { x: `${Math.random() * 200 - 100}%`, y: '30%' },
-        { x: `${Math.random() * 200 - 100}%`, y: '50%' },
+        { x: `${Math.random() * contentsWidth - contentsWidth / 2}px`, y: '3%' },
+        { x: `${Math.random() * contentsWidth - contentsWidth}px`, y: '20%' },
+        { x: `${Math.random() * contentsWidth*2 - contentsWidth}px`, y: '30%' },
+        { x: `${Math.random() * contentsWidth*2 - contentsWidth}px`, y: '50%' },
       ],
       align: "self",
       relative: true,
@@ -185,8 +192,9 @@ function addNewContent(content, zIndex) {
 
   // 浮き沈みアニメーションを追加
   gsap.to(newContentElement, {
-    duration: 1, // 浮き沈みのスピード
-    y: "+=10", // 下に20px移動
+    duration: 2, // 浮き沈みのスピード
+    y: "+=10", // 下に10px移動
+    x: `+=${contentsWidth * 0.1}`, // コンテンツ幅の10%分横に移動
     repeat: -1, // 無限に繰り返す
     yoyo: true, // 元の位置に戻る
     ease: "sine.inOut", // 浮き沈みをスムーズに
@@ -197,16 +205,16 @@ function addNewContent(content, zIndex) {
 // 配列をシャッフル
 const shuffleArray = (array) => {
   return array.slice().sort(() => Math.random() - Math.random());
-}
+};
 
 // ページが読み込まれたとき
 globalThis.onload = async () => {
 
   // ポップアップの要素を取得
   const popupBackground = document.getElementById('popup-background');
-  const openPopupBtn = document.getElementById('openPopupBtn');
+  const openPopupBtn = document.getElementById('openPopup');
   const sendBtn = document.getElementById('sendBtn');
-  const grandmaImage = document.querySelector('img.grandma');
+  const grandmaImage = document.getElementById('openPopup-grandma');
 
   // ポップアップを開く
   openPopupBtn.addEventListener('click', () => {
@@ -222,73 +230,72 @@ globalThis.onload = async () => {
     grandmaImage.src = './images/grandma_wash.png';
     articles.splice(1)
   });
-    popupBackground.addEventListener('click', () => {
-    const x = document.getElementById("popup-wrapper");
-    x.classList.add("is-hidden");
-    grandmaImage.src = './images/grandma_wash.png';
-    });
-    
-    // 記事のシャッフル
-    articles = shuffleArray(await getArticles(1, 1, 1, ""));
-    const card = getArticleHTMLElement();
-    if (card !== undefined) {
-        addNewContent(card, 999);
-    }
-    
-    // 分流作成に必要な要素
-    const changeModeBtn = document.getElementById('create-river-btn');
-    const chooseOkBtn = document.getElementById('create-river-ok');
-    const submitName = document.getElementById('create-river-name');
-    const createDone = document.getElementById('create-river-done');
-    const createCancel = document.getElementById('create-river-cancel');
 
-    // モードの切り替え
-    changeModeBtn.addEventListener('click', () => {
-        // 川の作成モード
-        if (createRiver === false) {
-            console.log("Mode: Choose");
-            createRiver = true;
-            
-            const articleLinks = document.querySelectorAll(".article-link");
-            for (const articleLink of articleLinks) {
-                articleLink.style.pointerEvents = "none";
-            }
-            
-            const feedItems = document.querySelectorAll(".feed-item");
-            for (const feedItem of feedItems) {
-                feedItem.addEventListener('click', () => {
-                    // リストに保存しておく
-                    saveArticle(feedItem);
-                })
-            }
+  popupBackground.addEventListener('click', () => {
+  const x = document.getElementById("popup-wrapper");
+  x.classList.add("is-hidden");
+  grandmaImage.src = './images/grandma_wash.png';
+  });
+  
+  // 記事のシャッフル
+  articles = shuffleArray(await getArticles(1, 1, 1, ""));
+  const card = getArticleHTMLElement();
+  if (card !== undefined) {
+      addNewContent(card, 999);
+  }
+  
+  // 分流作成に必要な要素
+  const changeModeBtn = document.getElementById('create-river-btn');
+  const chooseOkBtn = document.getElementById('create-river-ok');
+  const createCancel = document.getElementById('create-river-cancel');
 
-            // リストの確定
-            chooseOkBtn.style.visibility = 'visible';
-            chooseOkBtn.addEventListener('click', async () => {
-                createRiver = false;
-                const url = await riverId("", riverArticles);
-                prompt("共有URL", url);
-            })
+  // モードの切り替え
+  changeModeBtn.addEventListener('click', () => {
+      // 川の作成モード
+      if (createRiver === false) {
+          console.log("Mode: Choose");
+          createRiver = true;
+          
+          const articleLinks = document.querySelectorAll(".article-link");
+          for (const articleLink of articleLinks) {
+              articleLink.style.pointerEvents = "none";
+          }
+          
+          const feedItems = document.querySelectorAll(".feed-item");
+          for (const feedItem of feedItems) {
+              feedItem.addEventListener('click', () => {
+                  // リストに保存しておく
+                  saveArticle(feedItem);
+              })
+          }
+
+          // リストの確定
+          chooseOkBtn.style.visibility = 'visible';
+          chooseOkBtn.addEventListener('click', async () => {
+              createRiver = false;
+              const url = await riverId("", riverArticles);
+              prompt("共有URL", url);
+          })
 
 
-            // キャンセル
-            createCancel.style.visibility = 'visible';
-            createCancel.addEventListener('click', () => {
-                createRiver = false;
-                articleLinks = [];
-            })
-            
-        // 通常モード
-        } else {
-            console.log("Mode: See");
-            createRiver = false;
+          // キャンセル
+          createCancel.style.visibility = 'visible';
+          createCancel.addEventListener('click', () => {
+              createRiver = false;
+              articleLinks = [];
+          })
+          
+      // 通常モード
+      } else {
+          console.log("Mode: See");
+          createRiver = false;
 
-            const articleLinks = document.querySelectorAll(".article-link");
-            for (const articleLink of articleLinks) {
-                articleLink.style.pointerEvents = "auto";
-            }
-        }
-    });
+          const articleLinks = document.querySelectorAll(".article-link");
+          for (const articleLink of articleLinks) {
+              articleLink.style.pointerEvents = "auto";
+          }
+      }
+  });
 };
 
 let zIndex = 998;
