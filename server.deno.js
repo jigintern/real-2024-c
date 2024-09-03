@@ -14,7 +14,7 @@ Deno.serve(async (req) => {
   console.log(pathname);
 
   //データベースにアクセス
-  // const kv = await Deno.openKv(Deno.env.get("DENOKV_URL"));
+  const kv = await Deno.openKv(Deno.env.get("DENOKV_URL"));
 
   //クエリパラメータを取得
   const param = new URL(req.url).searchParams;
